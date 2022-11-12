@@ -1,7 +1,8 @@
+import { H1 } from '@src/components/fonts/Font';
 const Logo = () => {
 	return (
 		<div>
-			<h1>헤더</h1>
+			<H1 fontFamily="'Nanum Gothic', sans-serif">Harmony</H1>
 		</div>
 	);
 };

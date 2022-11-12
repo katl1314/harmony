@@ -1,12 +1,14 @@
-import Logo from '@src/pages/header/Logo';
 import Nav from '@src/pages/header/Nav';
-import { HeaderContainer } from '@src/styles/header';
+import Gnb from '@src/pages/header/Gnb';
+import { HeaderContainer, HeaderWrap } from '@src/styles/header';
 const Header = () => {
 	return (
-		<HeaderContainer>
-			<Logo />
-			<Nav />
-		</HeaderContainer>
+		<HeaderWrap>
+			<HeaderContainer>
+				<Nav />
+				<Gnb />
+			</HeaderContainer>
+		</HeaderWrap>
 	);
 };
 
