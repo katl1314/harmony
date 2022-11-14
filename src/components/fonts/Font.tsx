@@ -17,7 +17,7 @@ export const H1 = styled.h1`
 	font-family: ${(props: FontInterface) => props.fontFamily || 'none'};
 `;
 
-export const H2 = styled.h1`
+export const H2 = styled.h2`
 	font-size: 24px;
 	font-weight: bold;
 	background-color: ${(props: FontInterface) =>
@@ -26,7 +26,7 @@ export const H2 = styled.h1`
 	font-family: ${(props: FontInterface) => props.fontFamily || 'none'};
 `;
 
-export const H3 = styled.h1`
+export const H3 = styled.h3`
 	font-size: 18px;
 	font-weight: bold;
 	background-color: ${(props: FontInterface) =>
