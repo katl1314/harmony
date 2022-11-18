@@ -1,9 +1,13 @@
-import Layout from '@src/layout/Layout';
+import Header from '@src/layout/Header';
+import Content from '@src/layout/Content';
+import Footer from '@src/layout/Footer';
 
 function App() {
 	return (
 		<div className="App">
-			<Layout />
+			<Header></Header>
+			<Content></Content>
+			<Footer></Footer>
 		</div>
 	);
 }
