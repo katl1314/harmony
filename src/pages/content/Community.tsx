@@ -1,15 +1,22 @@
 import { H2 } from '@src/components/fonts/Font';
 import { Section } from '@src/styles/content';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext } from 'react';
 import { ServiceFactory } from '@src/services/ServiceFactory';
 import { UserType } from '@src/types/UserType';
-import Vote from '@src/components/vote/Vote';
 import styled from 'styled-components';
 import Summary from '@src/components/summary/Summary';
+import { Page } from '@src/components/page/Page';
 
 const Community = () => {
 	// 컴포넌트 렌더링 이후 실행함.
 	const [userList, setUserList] = useState([]);
+	const [totalCnt, setTotalCnt] = useState(0);
+	const [firstIndexSB, setFirstIndexSB] = useState(0);
+	const limitCountSB = 10;
+
+	const handlerClick = (index: number) => {
+		setFirstIndexSB(index * limitCountSB);
+	};
 
 	useEffect(() => {
 		// db의 내용 조회함.
@@ -17,39 +24,31 @@ const Community = () => {
 		const config = {
 			header: { 'Content-Type': 'application/json' },
 			params: {
-				firstIndexSB: 0,
-				limitCountSB: 10,
+				firstIndexSB,
+				limitCountSB,
 			},
 		};
 
-		// event binding
-		let status = false;
-		const scrollEvent = () => {
-			// status가 false일때만 이벤트 처리함.
-			if (!status) {
-				status = true;
-				setTimeout(() => {
-					console.log('스크롤이 이동한다');
-					status = false;
-				}, 100);
-			}
-		};
 		// 중첩 객체가 없을 경우 안전하게 접근하도록 ?.(옵셔널 체이닝)을 사용함.
 		ServiceFactory.AxiosService?.post(url, config)
-			.then(({ data: { responseData, totalCnt } }) => setUserList(responseData))
+			.then(({ data: { responseData, totalCnt } }) => {
+				setUserList(responseData);
+				setTotalCnt(totalCnt);
+			})
 			.catch((error) => console.error(error));
-
-		document.addEventListener('scroll', scrollEvent);
-		return () => {
-			// cleanup method (컴포넌트 언마운트(더이상 사용하지 않을때)시 호출함.)
-			// event unbinding
-			document.removeEventListener('scroll', scrollEvent);
-		};
-	}, []);
+	}, [firstIndexSB]);
 
 	return (
 		<Section>
 			<H2>Community</H2>
+			{totalCnt && (
+				<Page
+					totalCnt={totalCnt}
+					limitCount={limitCountSB}
+					currentPage={firstIndexSB / limitCountSB}
+					onPageClick={handlerClick}
+				/>
+			)}
 			<Content datas={userList} />
 		</Section>
 	);
@@ -61,14 +60,14 @@ const Content = ({ datas }: { datas: Array<UserType> }) => {
 			const summaryContent = (
 				<>
 					<div>이름 : {name}</div>
+					<div>아이디 : {id}</div>
 					<div>이메일 : {email}</div>
-					<div>가입날짜 : {new Date(timestamp).toLocaleDateString()}</div>
+					<div>가입날짜 : {new Date(timestamp).toString()}</div>
 				</>
 			);
 
 			return (
 				<ContentWrap key={`${id}_${i}`}>
-					<Vote />
 					<Summary children={summaryContent} />
 				</ContentWrap>
 			);
@@ -78,10 +77,9 @@ const Content = ({ datas }: { datas: Array<UserType> }) => {
 };
 
 const ContentWrap = styled.div`
-	padding: 10px;
-	border: 1px solid;
-	margin: 10px;
 	display: flex;
+	margin: 1vh;
+	border-bottom: 1px solid;
 `;
 
 export default Community;
