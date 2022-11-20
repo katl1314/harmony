@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, createContext, useContext } from 'react';
 import styled from 'styled-components';
 
 interface PageInterface {
@@ -7,6 +7,12 @@ interface PageInterface {
 	currentPage: number;
 	onPageClick: (index: number) => void;
 }
+
+export const PageContext = createContext({
+	limitCount: 0,
+	currentPage: 0,
+	onPageClick: (index: number) => {},
+});
 
 export const Page = ({
 	totalCnt,
@@ -20,53 +26,34 @@ export const Page = ({
 			: totalCnt / limitCount;
 
 	return (
-		<PageWrap>
-			<PagePrevious onPageClick={onPageClick} currentPage={currentPage} />
-			<PageList
-				onPageClick={onPageClick}
-				currentPage={currentPage}
-				pageTotal={pageTotal}
-			/>
-			<PageNext onPageClick={onPageClick} currentPage={currentPage} />
-		</PageWrap>
+		<PageContext.Provider value={{ limitCount, currentPage, onPageClick }}>
+			<PageWrap>
+				<PagePrevious />
+				<PageList pageTotal={pageTotal} />
+				<PageNext />
+			</PageWrap>
+		</PageContext.Provider>
 	);
 };
 
-const PagePrevious = ({
-	currentPage,
-	onPageClick,
-}: {
-	currentPage: number;
-	onPageClick: (index: number) => void;
-}) => {
+const PagePrevious = () => {
+	const { currentPage, onPageClick } = useContext(PageContext);
 	const pageClickPrevious = () => {
 		onPageClick(currentPage - 1);
 	};
 	return <div onClick={pageClickPrevious}>이전</div>;
 };
 
-const PageNext = ({
-	currentPage,
-	onPageClick,
-}: {
-	currentPage: number;
-	onPageClick: (index: number) => void;
-}) => {
+const PageNext = () => {
+	const { currentPage, onPageClick } = useContext(PageContext);
 	const pageClickPrevious = () => {
 		onPageClick(currentPage + 1);
 	};
 	return <div onClick={pageClickPrevious}>다음</div>;
 };
 
-const PageList = ({
-	pageTotal,
-	onPageClick,
-	currentPage,
-}: {
-	pageTotal: number;
-	currentPage: number;
-	onPageClick: (index: number) => void;
-}) => {
+const PageList = ({ pageTotal }: { pageTotal: number }) => {
+	const { currentPage, onPageClick } = useContext(PageContext);
 	const handlerPageClick = (index: number) => {
 		onPageClick(index);
 	};
