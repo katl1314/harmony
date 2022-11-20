@@ -48,11 +48,11 @@ const Community = () => {
 			})
 			.catch((error) => console.error(error));
 	}, [firstIndexSB]);
-
+	console.log(totalCnt);
 	return (
 		<Section>
 			<H2>Community</H2>
-			{totalCnt && (
+			{totalCnt > 0 ? (
 				<>
 					<Content datas={userList} />
 					<Page
@@ -62,6 +62,8 @@ const Community = () => {
 						onPageClick={handlerClick}
 					/>
 				</>
+			) : (
+				<div>Loading...</div>
 			)}
 		</Section>
 	);
