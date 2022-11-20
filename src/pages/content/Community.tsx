@@ -6,6 +6,7 @@ import { UserType } from '@src/types/UserType';
 import styled from 'styled-components';
 import Summary from '@src/components/summary/Summary';
 import { Page } from '@src/components/page/Page';
+import moment from 'moment';
 
 const Community = () => {
 	// 컴포넌트 렌더링 이후 실행함.
@@ -15,6 +16,16 @@ const Community = () => {
 	const limitCountSB = 10;
 
 	const handlerClick = (index: number) => {
+		const pageTotal =
+			totalCnt % limitCountSB
+				? Math.ceil(totalCnt / limitCountSB)
+				: totalCnt / limitCountSB;
+		if (index < 0) {
+			return;
+		}
+		if (index > pageTotal) {
+			return;
+		}
 		setFirstIndexSB(index * limitCountSB);
 	};
 
@@ -42,37 +53,37 @@ const Community = () => {
 		<Section>
 			<H2>Community</H2>
 			{totalCnt && (
-				<Page
-					totalCnt={totalCnt}
-					limitCount={limitCountSB}
-					currentPage={firstIndexSB / limitCountSB}
-					onPageClick={handlerClick}
-				/>
+				<>
+					<Content datas={userList} />
+					<Page
+						totalCnt={totalCnt}
+						limitCount={limitCountSB}
+						currentPage={firstIndexSB / limitCountSB}
+						onPageClick={handlerClick}
+					/>
+				</>
 			)}
-			<Content datas={userList} />
 		</Section>
 	);
 };
 
 const Content = ({ datas }: { datas: Array<UserType> }) => {
-	const userList = datas.map(
-		({ name, id, email, timestamp }: UserType, i: number) => {
-			const summaryContent = (
-				<>
-					<div>이름 : {name}</div>
-					<div>아이디 : {id}</div>
-					<div>이메일 : {email}</div>
-					<div>가입날짜 : {new Date(timestamp).toString()}</div>
-				</>
-			);
+	const userList = datas.map(({ id, timestamp }: UserType, i: number) => {
+		const summaryContent = (
+			<>
+				<div>아이디 : {id}</div>
+				<div>
+					가입날짜 : {moment(new Date(timestamp)).format('yyyy-MM-DD HH:mm:ss')}
+				</div>
+			</>
+		);
 
-			return (
-				<ContentWrap key={`${id}_${i}`}>
-					<Summary children={summaryContent} />
-				</ContentWrap>
-			);
-		}
-	);
+		return (
+			<ContentWrap key={`${id}_${i}`}>
+				<Summary children={summaryContent} />
+			</ContentWrap>
+		);
+	});
 	return <div>{userList}</div>;
 };
 
