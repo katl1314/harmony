@@ -53,7 +53,7 @@ const PageNext = () => {
 };
 
 const PageList = ({ pageTotal }: { pageTotal: number }) => {
-	const { currentPage, onPageClick } = useContext(PageContext);
+	const { currentPage, onPageClick, limitCount } = useContext(PageContext);
 	const handlerPageClick = (index: number) => {
 		onPageClick(index);
 	};
@@ -71,7 +71,7 @@ const PageList = ({ pageTotal }: { pageTotal: number }) => {
 		}
 	}, [currentPage]);
 
-	const pageArray = new Array(Math.floor(pageTotal / 2));
+	const pageArray = new Array(Math.floor(pageTotal < limitCount ? 1 : pageTotal / 2));
 	pageArray.fill(null);
 
 	const pageClick = (index: number) => {
