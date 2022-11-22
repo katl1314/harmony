@@ -1,8 +1,8 @@
 import { H2 } from '@src/components/fonts/Font';
 import { Section } from '@src/styles/content';
-import { useEffect, useState, createContext } from 'react';
+import { useEffect, useState } from 'react';
 import { ServiceFactory } from '@src/services/ServiceFactory';
-import { UserType } from '@src/types/UserType';
+import { BoardType } from '@src/types/Types';
 import styled from 'styled-components';
 import Summary from '@src/components/summary/Summary';
 import { Page } from '@src/components/page/Page';
@@ -10,20 +10,14 @@ import moment from 'moment';
 
 const Community = () => {
 	// 컴포넌트 렌더링 이후 실행함.
-	const [userList, setUserList] = useState([]);
+	const [boardList, setBoardList] = useState([]);
+	const [isLoading, setLoading] = useState(false);
 	const [totalCnt, setTotalCnt] = useState(0);
 	const [firstIndexSB, setFirstIndexSB] = useState(0);
 	const limitCountSB = 10;
 
 	const handlerClick = (index: number) => {
-		const pageTotal =
-			totalCnt % limitCountSB
-				? Math.ceil(totalCnt / limitCountSB)
-				: totalCnt / limitCountSB;
 		if (index < 0) {
-			return;
-		}
-		if (index > pageTotal) {
 			return;
 		}
 		setFirstIndexSB(index * limitCountSB);
@@ -31,7 +25,7 @@ const Community = () => {
 
 	useEffect(() => {
 		// db의 내용 조회함.
-		const url = 'http://127.0.0.1:8080/api/user/';
+		const url = 'http://127.0.0.1:8080/api/board/';
 		const config = {
 			header: { 'Content-Type': 'application/json' },
 			params: {
@@ -43,18 +37,19 @@ const Community = () => {
 		// 중첩 객체가 없을 경우 안전하게 접근하도록 ?.(옵셔널 체이닝)을 사용함.
 		ServiceFactory.AxiosService?.post(url, config)
 			.then(({ data: { responseData, totalCnt } }) => {
-				setUserList(responseData);
+				setLoading(true);
+				setBoardList(responseData);
 				setTotalCnt(totalCnt);
 			})
 			.catch((error) => console.error(error));
 	}, [firstIndexSB]);
-	console.log(totalCnt);
+
 	return (
 		<Section>
 			<H2>Community</H2>
-			{totalCnt > 0 ? (
+			{isLoading ? (
 				<>
-					<Content datas={userList} />
+					<Content datas={boardList} />
 					<Page
 						totalCnt={totalCnt}
 						limitCount={limitCountSB}
@@ -69,19 +64,19 @@ const Community = () => {
 	);
 };
 
-const Content = ({ datas }: { datas: Array<UserType> }) => {
-	const userList = datas.map(({ id, timestamp }: UserType, i: number) => {
+const Content = ({ datas }: { datas: Array<BoardType> }) => {
+	const userList = datas.map(({ boardId, createDt }: BoardType, i: number) => {
 		const summaryContent = (
 			<>
-				<div>아이디 : {id}</div>
+				<div>아이디 : {boardId}</div>
 				<div>
-					가입날짜 : {moment(new Date(timestamp)).format('yyyy-MM-DD HH:mm:ss')}
+					작성일자 : {moment(new Date(createDt)).format('yyyy-MM-DD HH:mm:ss')}
 				</div>
 			</>
 		);
 
 		return (
-			<ContentWrap key={`${id}_${i}`}>
+			<ContentWrap key={`${boardId}_${i}`}>
 				<Summary children={summaryContent} />
 			</ContentWrap>
 		);
