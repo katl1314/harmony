@@ -1,17 +1,14 @@
-import { H2 } from '@src/components/fonts/Font';
-import { Section } from '@src/styles/content';
 import { useEffect, useState } from 'react';
-import { ServiceFactory } from '@src/services/ServiceFactory';
-import { BoardType } from '@src/types/Types';
 import styled from 'styled-components';
-import Summary from '@src/components/summary/Summary';
-import { Page } from '@src/components/page/Page';
-import moment from 'moment';
+import { BoardType } from '@src/types/Types';
+import { ServiceFactory } from '@src/services/ServiceFactory';
+import Summary from '@components/summary/Summary';
+import Page from '@components/page/Page';
+import Form from '@components/Form/Form';
 
 const Community = () => {
 	// 컴포넌트 렌더링 이후 실행함.
 	const [boardList, setBoardList] = useState([]);
-	const [isLoading, setLoading] = useState(false);
 	const [totalCnt, setTotalCnt] = useState(0);
 	const [firstIndexSB, setFirstIndexSB] = useState(0);
 	const limitCountSB = 10;
@@ -37,7 +34,6 @@ const Community = () => {
 		// 중첩 객체가 없을 경우 안전하게 접근하도록 ?.(옵셔널 체이닝)을 사용함.
 		ServiceFactory.AxiosService?.post(url, config)
 			.then(({ data: { responseData, totalCnt } }) => {
-				setLoading(true);
 				setBoardList(responseData);
 				setTotalCnt(totalCnt);
 			})
@@ -45,49 +41,45 @@ const Community = () => {
 	}, [firstIndexSB]);
 
 	return (
-		<Section>
-			<H2>Community</H2>
-			{isLoading ? (
-				<>
-					<Content datas={boardList} />
-					<Page
-						totalCnt={totalCnt}
-						limitCount={limitCountSB}
-						currentPage={firstIndexSB / limitCountSB}
-						onPageClick={handlerClick}
-					/>
-				</>
-			) : (
-				<div>Loading...</div>
-			)}
-		</Section>
+		// 조건부 렌더링 실습 isLoading상태값에 따라 보여주는 React엘리먼트는 다름.
+		<>
+			<div>
+				<Form />
+				<Content datas={boardList} />
+				<Page
+					totalCnt={totalCnt}
+					limitCount={limitCountSB}
+					currentPage={firstIndexSB / limitCountSB}
+					onPageClick={handlerClick}
+				/>
+			</div>
+		</>
 	);
 };
 
 const Content = ({ datas }: { datas: Array<BoardType> }) => {
-	const userList = datas.map(({ boardId, createDt }: BoardType, i: number) => {
-		const summaryContent = (
-			<>
-				<div>아이디 : {boardId}</div>
-				<div>
-					작성일자 : {moment(new Date(createDt)).format('yyyy-MM-DD HH:mm:ss')}
-				</div>
-			</>
-		);
-
-		return (
-			<ContentWrap key={`${boardId}_${i}`}>
-				<Summary children={summaryContent} />
-			</ContentWrap>
-		);
-	});
-	return <div>{userList}</div>;
+	const BoardList = datas.map(
+		({ boardId, writerId, title, content, createDt }: BoardType, i: number) => {
+			return (
+				<ContentWrap key={`${boardId}_${i}`}>
+					<Summary
+						title={title}
+						content={content}
+						createDt={createDt}
+						writerId={writerId}
+						boardId={boardId}
+					/>
+				</ContentWrap>
+			);
+		}
+	);
+	return <div>{BoardList}</div>;
 };
 
 const ContentWrap = styled.div`
 	display: flex;
 	margin: 1vh;
-	border-bottom: 1px solid;
+	border-bottom: 1px dashed #e5e5e5;
 `;
 
 export default Community;
