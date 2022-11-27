@@ -42,9 +42,9 @@ const Community = () => {
 
 	return (
 		// 조건부 렌더링 실습 isLoading상태값에 따라 보여주는 React엘리먼트는 다름.
-		<>
-			<div>
-				<Form />
+		<div style={{ display: 'flex', justifyContent: 'center' }}>
+			<LNB />
+			<div style={{ width: '70%', padding: '0 2%' }}>
 				<Content datas={boardList} />
 				<Page
 					totalCnt={totalCnt}
@@ -53,7 +53,7 @@ const Community = () => {
 					onPageClick={handlerClick}
 				/>
 			</div>
-		</>
+		</div>
 	);
 };
 
@@ -79,7 +79,14 @@ const Content = ({ datas }: { datas: Array<BoardType> }) => {
 const ContentWrap = styled.div`
 	display: flex;
 	margin: 1vh;
+	padding: 0.5em;
 	border-bottom: 1px dashed #e5e5e5;
+`;
+
+const LNB = styled.div`
+	width: 15%;
+	height: 500px;
+	background: red;
 `;
 
 export default Community;

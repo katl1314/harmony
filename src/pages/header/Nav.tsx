@@ -3,6 +3,16 @@ import styled from 'styled-components';
 const Nav = () => {
 	return (
 		<NavWrap>
+			<h1
+				style={{
+					lineHeight: '50px',
+					fontSize: '20px',
+					fontWeight: 700,
+					marginLeft: '0.4em',
+				}}
+			>
+				<a href="/">harmony</a>
+			</h1>
 			<ul>
 				<li>
 					<NavLink to={'/community'}>커뮤니티</NavLink>
@@ -19,7 +29,6 @@ const Nav = () => {
 };
 
 const NavWrap = styled.nav`
-
 	// PC
 	@media screen and (min-width: 1024px) {
 		display: flex;
@@ -27,15 +36,18 @@ const NavWrap = styled.nav`
 			display: flex;
 			line-height: 50px;
 			overflow: hidden;
+			margin-left: 1em;
 			& > li {
 				position: relative;
 				margin: 0 1px;
+				padding: 0 0.5em;
 				& > a {
 					display: inline-block;
 					text-decoration: none;
-					padding: 0 30px;
 					font-size: 1.1em;
+					padding: 0 1em;
 					color: black;
+					box-sizing: border-box;
 				}
 
 				& > a.active {
@@ -58,19 +70,21 @@ const NavWrap = styled.nav`
 		}
 	}
 	// 테블릿
-	@media screen and (min-width:768px) and (max-width: 1023px) {
+	@media screen and (min-width: 768px) and (max-width: 1023px) {
 		display: flex;
 		& > ul {
 			display: flex;
 			line-height: 50px;
 			overflow: hidden;
+			margin-left: 1em;
 			& > li {
 				position: relative;
 				margin: 0 1px;
+				padding: 0 0.5em;
 				& > a {
 					display: inline-block;
 					text-decoration: none;
-					padding: 0 30px;
+					padding: 0 0.5em;
 					font-size: 1em;
 					color: black;
 				}

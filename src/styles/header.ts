@@ -8,7 +8,7 @@ export const HeaderWrap = styled.header`
 export const HeaderContainer = styled.div`
 	// PC
 	@media screen and (min-width: 1024px) {
-		width: 80%;
+		width: 65%;
 		margin: 0 auto;
 		display: flex;
 		justify-content: space-between;
