@@ -1,12 +1,12 @@
 import Nav from '@src/pages/header/Nav';
-import Account from '@src/pages/header/Account';
+import UserBar from '@src/pages/header/UserBar';
 import { HeaderContainer, HeaderWrap } from '@src/styles/header';
 const Header = () => {
 	return (
 		<HeaderWrap>
 			<HeaderContainer>
 				<Nav />
-				<Account />
+				<UserBar />
 			</HeaderContainer>
 		</HeaderWrap>
 	);

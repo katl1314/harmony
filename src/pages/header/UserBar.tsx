@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Account = () => {
+const UserBar = () => {
 	return (
 		<NavWrap>
 			<ul>
@@ -69,4 +69,4 @@ const NavWrap = styled.nav`
 	}
 `;
 
-export default Account;
+export default UserBar;

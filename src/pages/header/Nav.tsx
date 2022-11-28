@@ -60,10 +60,10 @@ const NavWrap = styled.nav`
 			& > li::before {
 				content: '';
 				position: absolute;
-				top: 13px;
+				top: 15px;
 				left: -2px;
 				width: 1px;
-				height: 23px;
+				height: 20px;
 				background-color: gray;
 				opacity: 0.5;
 			}
@@ -99,10 +99,10 @@ const NavWrap = styled.nav`
 			& > li::before {
 				content: '';
 				position: absolute;
-				top: 13px;
+				top: 15px;
 				left: -2px;
 				width: 1px;
-				height: 23px;
+				height: 20px;
 				background-color: gray;
 				opacity: 0.5;
 			}
