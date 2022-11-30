@@ -1,15 +1,16 @@
 import Nav from '@src/pages/header/Nav';
-import Gnb from '@src/pages/header/Gnb';
+import UserBar from '@src/pages/header/UserBar';
 import { HeaderContainer, HeaderWrap } from '@src/styles/header';
-const Header = () => {
+import { memo } from 'react';
+const Header = memo(() => {
 	return (
 		<HeaderWrap>
 			<HeaderContainer>
 				<Nav />
-				<Gnb />
+				<UserBar />
 			</HeaderContainer>
 		</HeaderWrap>
 	);
-};
+});
 
 export default Header;

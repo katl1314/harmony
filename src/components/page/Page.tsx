@@ -8,13 +8,13 @@ interface PageInterface {
 	onPageClick: (index: number) => void;
 }
 
-export const PageContext = createContext({
+const PageContext = createContext({
 	limitCount: 0,
 	currentPage: 0,
 	onPageClick: (index: number) => {},
 });
 
-export const Page = ({
+const Page = ({
 	totalCnt,
 	limitCount,
 	currentPage,
@@ -71,7 +71,9 @@ const PageList = ({ pageTotal }: { pageTotal: number }) => {
 		}
 	}, [currentPage]);
 
-	const pageArray = new Array(Math.floor(pageTotal < limitCount ? 1 : pageTotal / 2));
+	const pageArray = new Array(
+		Math.floor(pageTotal < limitCount ? 1 : pageTotal / 2)
+	);
 	pageArray.fill(null);
 
 	const pageClick = (index: number) => {
@@ -111,3 +113,5 @@ const PageListWrap = styled.ul`
 		cursor: pointer;
 	}
 `;
+
+export default Page;

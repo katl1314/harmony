@@ -21,6 +21,7 @@ const Gnb = () => {
 
 const NavWrap = styled.nav`
 	display: flex;
+	align-items: center;
 	& > ul {
 		display: flex;
 		line-height: 35px;
