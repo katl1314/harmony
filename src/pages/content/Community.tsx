@@ -4,7 +4,6 @@ import { BoardType } from '@src/types/Types';
 import { ServiceFactory } from '@src/services/ServiceFactory';
 import Summary from '@components/summary/Summary';
 import Page from '@components/page/Page';
-import Form from '@components/Form/Form';
 
 const Community = () => {
 	// 컴포넌트 렌더링 이후 실행함.
@@ -42,18 +41,21 @@ const Community = () => {
 
 	return (
 		// 조건부 렌더링 실습 isLoading상태값에 따라 보여주는 React엘리먼트는 다름.
-		<div style={{ display: 'flex', justifyContent: 'center' }}>
-			<LNB />
-			<div style={{ width: '70%', padding: '0 2%' }}>
-				<Content datas={boardList} />
-				<Page
-					totalCnt={totalCnt}
-					limitCount={limitCountSB}
-					currentPage={firstIndexSB / limitCountSB}
-					onPageClick={handlerClick}
-				/>
-			</div>
-		</div>
+		<>
+			{totalCnt > 0 ? (
+				<>
+					<Content datas={boardList} />
+					<Page
+						totalCnt={totalCnt}
+						limitCount={limitCountSB}
+						currentPage={firstIndexSB / limitCountSB}
+						onPageClick={handlerClick}
+					/>
+				</>
+			) : (
+				<div>Loading...</div>
+			)}
+		</>
 	);
 };
 
@@ -81,12 +83,6 @@ const ContentWrap = styled.div`
 	margin: 1vh;
 	padding: 0.5em;
 	border-bottom: 1px dashed #e5e5e5;
-`;
-
-const LNB = styled.div`
-	width: 15%;
-	height: 500px;
-	background: red;
 `;
 
 export default Community;

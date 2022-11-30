@@ -1,14 +1,19 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { GiHamburgerMenu } from 'react-icons/gi';
+
 const Nav = () => {
 	return (
 		<NavWrap>
+			<MobileNavbar>
+				<GiHamburgerMenu size={32} />
+			</MobileNavbar>
 			<h1
 				style={{
 					lineHeight: '50px',
 					fontSize: '20px',
 					fontWeight: 700,
-					marginLeft: '0.4em',
+					marginLeft: '1em',
 				}}
 			>
 				<a href="/">harmony</a>
@@ -110,7 +115,26 @@ const NavWrap = styled.nav`
 	}
 	// 모바일
 	@media screen and (max-width: 767px) {
-		min-width: 100%;
+		display: flex;
+		align-items: center;
+		margin: 0 0.5em;
+		& > ul {
+			display: none;
+		}
+	}
+`;
+
+const MobileNavbar = styled.div`
+	// PC, 태블릿 => display none
+	@media screen and (min-width: 768px) {
+		display: none;
+	}
+
+	// 모바일
+	@media screen and (max-width: 767px) {
+		& > ul {
+			display: block;
+		}
 	}
 `;
 

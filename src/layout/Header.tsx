@@ -1,7 +1,8 @@
 import Nav from '@src/pages/header/Nav';
 import UserBar from '@src/pages/header/UserBar';
 import { HeaderContainer, HeaderWrap } from '@src/styles/header';
-const Header = () => {
+import { memo } from 'react';
+const Header = memo(() => {
 	return (
 		<HeaderWrap>
 			<HeaderContainer>
@@ -10,6 +11,6 @@ const Header = () => {
 			</HeaderContainer>
 		</HeaderWrap>
 	);
-};
+});
 
 export default Header;

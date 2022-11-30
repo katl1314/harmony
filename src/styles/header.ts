@@ -8,14 +8,22 @@ export const HeaderWrap = styled.header`
 export const HeaderContainer = styled.div`
 	// PC
 	@media screen and (min-width: 1024px) {
-		width: 65%;
+		width: 80%;
 		margin: 0 auto;
 		display: flex;
 		justify-content: space-between;
 	}
 
 	// 태블릿
-	@media screen {
+	@media screen and (min-width: 768px) and (max-width: 1023px) {
+		width: 90%;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	// 모바일
+	@media screen and (max-width: 767px) {
 		margin: 0 auto;
 		display: flex;
 		justify-content: space-between;

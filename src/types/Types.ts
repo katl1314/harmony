@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent } from 'react';
 
 export type BoardType = {
 	boardId: string;
@@ -10,15 +10,6 @@ export type BoardType = {
 	createDt: Date;
 };
 
-export type UserType = {
-	id: string;
-	name: string;
-	password: string;
-	email: string;
-	timestamp: string;
-	isAdmin: 'y' | 'n';
-};
-
 export type CommonType = {
 	id: string;
 	name: string;
@@ -27,9 +18,18 @@ export type CommonType = {
 export type InputType = {
 	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	readOnly?: boolean;
-	type : 'text' | 'password';
+	type: 'text' | 'password';
 	value: string;
 	placeholder?: string;
 } & CommonType;
 
 export type ButtonType = {} | CommonType;
+
+export type UserType = {
+	displayName: string | null;
+	email: string | null;
+	photoURL: string | null;
+	uid: string | null;
+};
+
+export type AuthServiceType = 'google' | 'github';

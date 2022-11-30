@@ -4,7 +4,7 @@ import {
 	githubAuthProvider,
 } from '@src/firebase.config';
 
-type AuthServiceType = 'google' | 'github';
+import { AuthServiceType } from '@src/types/Types';
 
 export class AuthService {
 	login(name: AuthServiceType) {
@@ -18,8 +18,10 @@ export class AuthService {
 	getProvider(name: AuthServiceType) {
 		switch (name) {
 			case 'google':
+				// new firebase.auth.GoogleAuthProvider();
 				return googleAuthProvider;
 			case 'github':
+				// new firebase.auth.GithubAuthProvider();
 				return githubAuthProvider;
 			default:
 				return null;
