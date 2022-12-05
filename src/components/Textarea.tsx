@@ -1,33 +1,31 @@
-import { InputType } from '@src/types/Types';
+import { TextareaType } from '@src/types/Types';
 import styled from 'styled-components';
 
-const Input = ({
+const Textarea = ({
 	id,
-	type,
 	placeholder,
 	onChange,
 	value,
-}: InputType<HTMLInputElement>) => {
+}: TextareaType<HTMLTextAreaElement>) => {
 	return (
 		<InputWrap>
-			<input
+			<textarea
 				id={id}
-				type={type}
 				onChange={onChange}
 				placeholder={placeholder}
 				value={value}
-			></input>
+			></textarea>
 		</InputWrap>
 	);
 };
 
 const InputWrap = styled.div`
 	margin: 0.5em auto;
-	& > input {
+	& > textarea {
 		width: 100%;
 		border: 1px solid skyblue;
 		padding: 0.5em;
 	}
 `;
 
-export default Input;
+export default Textarea;

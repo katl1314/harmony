@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { BoardType } from '@src/types/Types';
+import { useEffect, useState, FormEvent } from 'react';
 import { ServiceFactory } from '@src/services/ServiceFactory';
-import Summary from '@components/summary/Summary';
-import Page from '@components/page/Page';
-
+import { Routes, Route } from 'react-router-dom';
+import Main from '@src/pages/Main';
+import SNavLink from '@components/SNavLink';
+import Form from '@src/components/Form';
 const Community = () => {
 	// 컴포넌트 렌더링 이후 실행함.
 	const [boardList, setBoardList] = useState([]);
@@ -12,11 +11,16 @@ const Community = () => {
 	const [firstIndexSB, setFirstIndexSB] = useState(0);
 	const limitCountSB = 10;
 
-	const handlerClick = (index: number) => {
-		if (index < 0) {
+	const handlerClick = (page: number) => {
+		if (page < 0) {
 			return;
 		}
-		setFirstIndexSB(index * limitCountSB);
+		setFirstIndexSB(page * limitCountSB);
+	};
+
+	const postRegister = (event: FormEvent) => {
+		// 이벤트 동작 제어
+		event.preventDefault();
 	};
 
 	useEffect(() => {
@@ -42,47 +46,35 @@ const Community = () => {
 	return (
 		// 조건부 렌더링 실습 isLoading상태값에 따라 보여주는 React엘리먼트는 다름.
 		<>
-			{totalCnt > 0 ? (
-				<>
-					<Content datas={boardList} />
-					<Page
-						totalCnt={totalCnt}
-						limitCount={limitCountSB}
-						currentPage={firstIndexSB / limitCountSB}
-						onPageClick={handlerClick}
-					/>
-				</>
-			) : (
-				<div>Loading...</div>
-			)}
+			<Routes>
+				<Route
+					path="/"
+					element={
+						<Main
+							totalCnt={totalCnt}
+							boardList={boardList}
+							limitCount={limitCountSB}
+							firstIndex={firstIndexSB}
+							handlerClick={handlerClick}
+						>
+							<SNavLink
+								to="/community/new"
+								background="rgb(11,127,211)"
+								color="#fff"
+								borderradius={5}
+							>
+								등록하기
+							</SNavLink>
+						</Main>
+					}
+				></Route>
+				<Route
+					path="/new"
+					element={<Form onSubmit={postRegister} category="community" />}
+				></Route>
+			</Routes>
 		</>
 	);
 };
-
-const Content = ({ datas }: { datas: Array<BoardType> }) => {
-	const BoardList = datas.map(
-		({ boardId, writerId, title, content, createDt }: BoardType, i: number) => {
-			return (
-				<ContentWrap key={`${boardId}_${i}`}>
-					<Summary
-						title={title}
-						content={content}
-						createDt={createDt}
-						writerId={writerId}
-						boardId={boardId}
-					/>
-				</ContentWrap>
-			);
-		}
-	);
-	return <div>{BoardList}</div>;
-};
-
-const ContentWrap = styled.div`
-	display: flex;
-	margin: 1vh;
-	padding: 0.5em;
-	border-bottom: 1px dashed #e5e5e5;
-`;
 
 export default Community;

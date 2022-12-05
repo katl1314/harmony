@@ -4,7 +4,7 @@ import styled from 'styled-components';
 interface PageInterface {
 	totalCnt: number;
 	limitCount: number;
-	currentPage: number;
+	firstIndex: number;
 	onPageClick: (index: number) => void;
 }
 
@@ -17,14 +17,14 @@ const PageContext = createContext({
 const Page = ({
 	totalCnt,
 	limitCount,
-	currentPage,
+	firstIndex,
 	onPageClick,
 }: PageInterface) => {
 	const pageTotal =
 		totalCnt % limitCount
 			? Math.ceil(totalCnt / limitCount)
 			: totalCnt / limitCount;
-
+	const currentPage = firstIndex / limitCount;
 	return (
 		<PageContext.Provider value={{ limitCount, currentPage, onPageClick }}>
 			<PageWrap>
@@ -72,7 +72,7 @@ const PageList = ({ pageTotal }: { pageTotal: number }) => {
 	}, [currentPage]);
 
 	const pageArray = new Array(
-		Math.floor(pageTotal < limitCount ? 1 : pageTotal / 2)
+		Math.floor(pageTotal < limitCount ? pageTotal : pageTotal / 2)
 	);
 	pageArray.fill(null);
 

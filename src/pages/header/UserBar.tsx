@@ -1,28 +1,55 @@
-import { NavLink } from 'react-router-dom';
 import { useContext } from 'react';
 import styled from 'styled-components';
 import { AppContext } from '@src/App';
+import SNavLink from '@components/SNavLink';
+import { authService } from '@src/firebase.config';
+import Button from '@components/Button';
 const UserBar = () => {
 	const { uid, displayName, photoURL } = useContext(AppContext);
-	// uid가 null이면 로그인, 회원가입 항목 표시,
-	// uid가 null이 아니면 마이페이지 표시
+	const handlerSignout = async () => {
+		await authService.signOut();
+		sessionStorage.removeItem('user');
+		// 새로 고침
+		// BOM의 최상위 객체는 window
+		location.reload();
+	};
+
 	const LoginElement = !uid ? (
 		<ul>
 			<li>
-				<NavLink to={'/login'}>로그인</NavLink>
+				<SNavLink to="/login" background="white" borderradius={30} color="#000">
+					로그인
+				</SNavLink>
 			</li>
 			<li>
-				<NavLink to={'/join'}>회원가입</NavLink>
+				<SNavLink
+					to="/join"
+					background="skyblue"
+					borderradius={30}
+					color="#000"
+				>
+					회원가입
+				</SNavLink>
 			</li>
 		</ul>
 	) : (
-		<ProfileButton>
-			<ProfileImage>
-				{photoURL && displayName && (
-					<img src={photoURL} alt={displayName} width={40} height={40} />
-				)}
-			</ProfileImage>
-		</ProfileButton>
+		<>
+			<Button
+				background="#fff"
+				borderradius={10}
+				color="#000"
+				onClick={handlerSignout}
+			>
+				로그아웃
+			</Button>
+			<ProfileButton>
+				<ProfileImage>
+					{photoURL && displayName && (
+						<img src={photoURL} alt={displayName} width={40} height={40} />
+					)}
+				</ProfileImage>
+			</ProfileButton>
+		</>
 	);
 	return <NavWrap>{LoginElement}</NavWrap>;
 };
@@ -48,23 +75,6 @@ const NavWrap = styled.nav`
 			& > li {
 				position: relative;
 				padding: 0 0.5em;
-				& > a {
-					display: inline-block;
-					padding: 0 1em;
-					box-sizing: border-box;
-					border-radius: 30px;
-					padding: 0.7em 1em;
-				}
-
-				&:first-of-type > a {
-					border: 1px solid #e5e5e5;
-					background-color: #ffffff;
-				}
-
-				&:last-of-type > a {
-					border: 1px solid #e5e5e5;
-					background-color: skyblue;
-				}
 			}
 		}
 	}
@@ -79,22 +89,6 @@ const NavWrap = styled.nav`
 			& > li {
 				position: relative;
 				padding: 0 0.5em;
-				& > a {
-					display: inline-block;
-					padding: 0.5em 0.5em;
-					border-radius: 30px;
-					padding: 0.7em 1em;
-				}
-
-				&:first-of-type > a {
-					border: 1px solid #e5e5e5;
-					background-color: #ffffff;
-				}
-
-				&:last-of-type > a {
-					border: 1px solid #e5e5e5;
-					background-color: skyblue;
-				}
 			}
 		}
 	}
@@ -107,25 +101,6 @@ const NavWrap = styled.nav`
 			overflow: hidden;
 			margin-left: 1em;
 			align-items: center;
-			& > li {
-				position: relative;
-				padding: 0 0.5em;
-				& > a {
-					display: inline-block;
-					padding: 0.5em 0.5em;
-					border-radius: 30px;
-				}
-
-				&:first-of-type > a {
-					border: 1px solid #e5e5e5;
-					background-color: #ffffff;
-				}
-
-				&:last-of-type > a {
-					border: 1px solid #e5e5e5;
-					background-color: skyblue;
-				}
-			}
 		}
 	}
 `;

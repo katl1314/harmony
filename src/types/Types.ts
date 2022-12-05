@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEventHandler, ReactNode, FormEvent } from 'react';
 
 export type BoardType = {
 	boardId: string;
@@ -12,18 +12,32 @@ export type BoardType = {
 
 export type CommonType = {
 	id: string;
-	name: string;
 };
 
-export type InputType = {
-	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+export type InputType<T> = {
+	onChange: ChangeEventHandler<T>;
 	readOnly?: boolean;
 	type: 'text' | 'password';
 	value: string;
 	placeholder?: string;
 } & CommonType;
 
-export type ButtonType = {} | CommonType;
+export type TextareaType<T> = {
+	onChange: ChangeEventHandler<T>;
+	readOnly?: boolean;
+	value: string;
+	placeholder?: string;
+} & CommonType;
+
+export type ReactNodeType = ReactNode | ReactNode[];
+
+export type ButtonType = {
+	background: string;
+	borderradius: number;
+	color: string;
+	children: ReactNodeType;
+	onClick?: () => void;
+};
 
 export type UserType = {
 	displayName: string | null;
@@ -33,3 +47,15 @@ export type UserType = {
 };
 
 export type AuthServiceType = 'google' | 'github';
+
+export type FormType = {
+	onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+};
+
+export type NavLinkType = {
+	to: string;
+	background: string;
+	borderradius: number;
+	color: string;
+	children: ReactNodeType;
+};
