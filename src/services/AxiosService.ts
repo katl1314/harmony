@@ -1,10 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
+import { ServiceType } from '@src/types/Types';
 
-type ServiceType = {
-	header: Object;
-	body?: Object;
-	params?: Object;
-};
+axios.defaults.withCredentials = true;
 
 export class AxiosService {
 	get(url: string, config?: ServiceType): Promise<AxiosResponse> {

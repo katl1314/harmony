@@ -1,8 +1,6 @@
-import { ChangeEvent } from 'react';
-import Button from '@src/components/Button';
+import Button from '@components/Button';
 import styled from 'styled-components';
 import { ServiceFactory } from '@src/services/ServiceFactory';
-import Input from '@src/components/input/Input';
 import { AuthServiceType } from '@src/types/Types';
 import { useNavigate } from 'react-router-dom';
 const Login = () => {
@@ -12,48 +10,31 @@ const Login = () => {
 	const fnSnsLogin = async (provider: AuthServiceType) => {
 		// async-await를 이용하여 promise를 대체함.
 		const loginState = await ServiceFactory.AuthService.login(provider);
-		loginState && navigation('/');
+		// 로그인 성공시 이전 페이지 이동함.
+		loginState && navigation(-1);
 	};
-
-	const handlerInputId = (event: ChangeEvent<HTMLInputElement>) => {};
-
-	const handlerInputPassword = (event: ChangeEvent<HTMLInputElement>) => {};
 
 	return (
 		<WrapLogin>
 			<Title>로그인</Title>
-			<Form>
-				<Input
-					id="id"
-					type="text"
-					onChange={handlerInputId}
-					value=""
-					placeholder="아이디"
-				/>
-				<Input
-					id="id"
-					type="password"
-					onChange={handlerInputPassword}
-					value=""
-					placeholder="패스워드"
-				/>
-			</Form>
-			<Button
-				background="#ffffff"
-				borderradius={30}
-				color="#000"
-				onClick={fnSnsLogin.bind(null, 'google')}
-			>
-				Google 로그인
-			</Button>
-			<Button
-				background="#ffffff"
-				borderradius={30}
-				color="#000"
-				onClick={fnSnsLogin.bind(null, 'google')}
-			>
-				Github 로그인
-			</Button>
+			<ButtonWrap>
+				<Button
+					type="normal"
+					borderRadius={30}
+					color="#000"
+					onClick={fnSnsLogin.bind(null, 'google')}
+				>
+					Google 로그인
+				</Button>
+				<Button
+					type="normal"
+					borderRadius={30}
+					color="#000"
+					onClick={fnSnsLogin.bind(null, 'github')}
+				>
+					Github 로그인
+				</Button>
+			</ButtonWrap>
 		</WrapLogin>
 	);
 };
@@ -62,26 +43,21 @@ const Title = styled.h2`
 	color: #000;
 	font-size: 35px;
 	font-weight: bold;
+	padding: 0.2em;
+`;
+
+const ButtonWrap = styled.div`
+	margin: 1em 0;
+
+	& > a {
+		margin: 0 0.2em;
+	}
 `;
 
 const WrapLogin = styled.div`
+	width: 60%;
+	margin: 18.5em auto;
 	text-align: center;
-`;
-
-const Form = styled.form`
-	@media screen and (min-width: 1024px) {
-		margin: 0.5em auto;
-		border-bottom: 1px solid;
-		padding: 0.5em;
-		width: 30%;
-	}
-
-	@media screen and (min-width: 768px) and (max-width: 1023px) {
-		margin: 0.5em auto;
-		border-bottom: 1px solid;
-		padding: 0.5em;
-		width: 60%;
-	}
 `;
 
 export default Login;

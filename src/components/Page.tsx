@@ -25,6 +25,7 @@ const Page = ({
 			? Math.ceil(totalCnt / limitCount)
 			: totalCnt / limitCount;
 	const currentPage = firstIndex / limitCount;
+
 	return (
 		<PageContext.Provider value={{ limitCount, currentPage, onPageClick }}>
 			<PageWrap>
@@ -58,7 +59,6 @@ const PageList = ({ pageTotal }: { pageTotal: number }) => {
 		onPageClick(index);
 	};
 	const pageRef = useRef<HTMLUListElement>(null);
-
 	useEffect(() => {
 		const pageUl = pageRef.current;
 		const pageLi = pageUl?.childNodes as NodeListOf<HTMLElement>;
@@ -66,31 +66,35 @@ const PageList = ({ pageTotal }: { pageTotal: number }) => {
 		if (pageLi) {
 			// page-active클래스를 가진 요소를 초기화.
 			[...pageLi].forEach((el) => el.classList.remove('page-active'));
-			const targetPageLi = pageLi[0] as HTMLElement;
-			targetPageLi.classList.add('page-active');
+			pageLi.forEach((el) => {
+				const pageLiId = Number(el.id.slice(el.id.indexOf('_') + 1));
+				if (pageLiId === currentPage + 1) {
+					console.dir(el);
+					el.classList.add('page-active');
+				}
+			});
 		}
 	}, [currentPage]);
 
-	const pageArray = new Array(
-		Math.floor(pageTotal < limitCount ? pageTotal : pageTotal / 2)
-	);
+	const pageArray = new Array(Math.floor(pageTotal));
 	pageArray.fill(null);
 
-	const pageClick = (index: number) => {
-		if (currentPage === currentPage + index) {
-			return;
-		}
-		handlerPageClick(currentPage + index);
+	const pageClick = (page: number) => {
+		handlerPageClick(page);
 	};
 
 	const pageUl = pageArray.map((_, index) => {
+		const page = index + 1;
 		return (
-			<li key={`page_${index + 1}`} onClick={pageClick.bind(this, index)}>
-				{currentPage + index + 1}
+			<li
+				key={`page_${page}`}
+				onClick={pageClick.bind(this, index)}
+				id={`page_${page}`}
+			>
+				{page}
 			</li>
 		);
 	});
-
 	return <PageListWrap ref={pageRef}>{pageUl}</PageListWrap>;
 };
 
@@ -98,7 +102,7 @@ const PageWrap = styled.div`
 	display: flex;
 	justify-content: center;
 	& > div {
-		padding: 0 0.5em;
+		padding: 0.5em;
 		font-size: 1.2em;
 		cursor: pointer;
 	}
@@ -108,9 +112,14 @@ const PageListWrap = styled.ul`
 	display: flex;
 
 	& > li {
-		padding: 0 0.5em;
+		padding: 0.5em;
 		font-size: 1.2em;
 		cursor: pointer;
+		border: none;
+		border-radius: 8px;
+		background-color: rgba(0, 0, 0, 0.3);
+		margin: 0 0.1em;
+		color: '#fff';
 	}
 `;
 

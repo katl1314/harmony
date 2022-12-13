@@ -2,33 +2,61 @@ import styled from 'styled-components';
 import { ButtonType } from '@src/types/Types';
 
 const Button = ({
-	background,
-	borderradius,
+	backColor,
+	borderRadius,
 	children,
 	color,
+	type,
 	onClick,
-}: ButtonType) => {
+}: ButtonType<HTMLAnchorElement | HTMLButtonElement>) => {
+	if (type === 'submit') {
+		return (
+			<ButtonWrap
+				type={type}
+				backColor={backColor}
+				color={color}
+				borderRadius={borderRadius}
+			>
+				{children}
+			</ButtonWrap>
+		);
+	}
 	return (
-		<ButtonWrap
-			background={background}
+		<ButtonAWrap
+			type={type}
+			backColor={backColor}
 			color={color}
-			borderradius={borderradius}
+			borderRadius={borderRadius}
 			onClick={onClick}
 		>
 			{children}
-		</ButtonWrap>
+		</ButtonAWrap>
 	);
 };
 
-const ButtonWrap = styled.a`
+const ButtonAWrap = styled.a`
 	display: inline-block;
 	box-sizing: border-box;
 	border: 1px solid #e5e5e5;
-	background-color: ${({ background }: ButtonType) => background ?? '#ffffff'};
-	border-radius: ${({ borderradius }: ButtonType) =>
-		borderradius ? `${borderradius}px` : `0px`};
+	background-color: ${({ backColor }: ButtonType<HTMLAnchorElement>) =>
+		backColor ?? '#ffffff'};
+	border-radius: ${({ borderRadius }: ButtonType<HTMLAnchorElement>) =>
+		borderRadius ? `${borderRadius}px` : `0px`};
 	padding: 0.7em 1em;
-	color: ${(props: ButtonType) => props.color || '#000'};
+	color: ${(props: ButtonType<HTMLAnchorElement>) => props.color || '#000'};
+	cursor: pointer; // 커서 모양 설정
+`;
+
+const ButtonWrap = styled.button`
+	display: inline-block;
+	box-sizing: border-box;
+	border: 1px solid #e5e5e5;
+	background-color: ${({ backColor }: ButtonType<HTMLButtonElement>) =>
+		backColor ?? '#ffffff'};
+	border-radius: ${({ borderRadius }: ButtonType<HTMLButtonElement>) =>
+		borderRadius ? `${borderRadius}px` : `0px`};
+	padding: 0.7em 1em;
+	color: ${(props: ButtonType<HTMLButtonElement>) => props.color || '#000'};
 	cursor: pointer; // 커서 모양 설정
 `;
 

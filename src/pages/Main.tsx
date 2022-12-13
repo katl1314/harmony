@@ -1,10 +1,10 @@
-import Summary from '@components/summary/Summary';
-import Page from '@components/page/Page';
-import View from '@components/View';
-import Controller from '@components/Controller';
-import { BoardType } from '@src/types/Types';
-import styled from 'styled-components';
 import { ReactNode } from 'react';
+import Controller from '@components/Controller';
+import Page from '@components/Page';
+import View from '@components/View';
+import Board from '@components/Board';
+import Content from '@components/Content';
+import Sidemenu from '@components/Sidemenu';
 
 type MainType = {
 	totalCnt: number;
@@ -25,44 +25,20 @@ const Main = ({
 }: MainType) => {
 	return (
 		<>
-			<Controller>{children}</Controller>
-			<View totalCnt={totalCnt}>
-				<Content datas={boardList} />
-				<Page
-					totalCnt={totalCnt}
-					limitCount={limitCount}
-					firstIndex={firstIndex}
-					onPageClick={handlerClick}
-				/>
-			</View>
+			<Board>
+				<Controller>{children}</Controller>
+				<View totalCnt={totalCnt}>
+					<Page
+						totalCnt={totalCnt}
+						limitCount={limitCount}
+						firstIndex={firstIndex}
+						onPageClick={handlerClick}
+					/>
+					<Content datas={boardList} />
+				</View>
+			</Board>
 		</>
 	);
 };
-
-const Content = ({ datas }: { datas: Array<BoardType> }) => {
-	const BoardList = datas.map(
-		({ boardId, writerId, title, content, createDt }: BoardType, i: number) => {
-			return (
-				<ContentWrap key={`${boardId}_${i}`}>
-					<Summary
-						title={title}
-						content={content}
-						createDt={createDt}
-						writerId={writerId}
-						boardId={boardId}
-					/>
-				</ContentWrap>
-			);
-		}
-	);
-	return <div>{BoardList}</div>;
-};
-
-const ContentWrap = styled.div`
-	display: flex;
-	margin: 1vh;
-	padding: 1.5em;
-	border-bottom: 1px dashed #e5e5e5;
-`;
 
 export default Main;

@@ -1,40 +1,41 @@
-import { TextareaType } from '@src/types/Types';
+import { InputType } from '@src/types/Types';
 import styled from 'styled-components';
 import { forwardRef, ForwardedRef } from 'react';
-const Textarea = forwardRef(
+const Input = forwardRef(
 	(
 		{
 			id,
+			type,
 			placeholder,
 			onChange,
 			value,
 			required,
-		}: TextareaType<HTMLTextAreaElement>,
-		ref: ForwardedRef<HTMLTextAreaElement>
+		}: InputType<HTMLInputElement>,
+		ref: ForwardedRef<HTMLInputElement>
 	) => {
 		return (
 			<InputWrap>
-				<textarea
+				<input
 					id={id}
+					type={type}
 					onChange={onChange}
 					placeholder={placeholder}
 					value={value}
 					required={required}
 					ref={ref}
-				></textarea>
+				></input>
 			</InputWrap>
 		);
 	}
 );
 
+export default Input;
+
 const InputWrap = styled.div`
 	margin: 0.5em auto;
-	& > textarea {
+	& > input {
 		width: 100%;
-		min-height: 200px;
 		border: 1px solid skyblue;
 		padding: 0.5em;
 	}
 `;
-
-export default Textarea;

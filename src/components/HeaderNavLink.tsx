@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { NavLinkType } from '@src/types/Types';
 
-const SNavLink = ({
+const HeaderNavLink = ({
 	to,
 	background,
 	borderradius,
@@ -32,4 +32,4 @@ const NavLinkWrap = styled(NavLink)`
 	color: ${({ color }: NavLinkType) => color ?? '#000'};
 `;
 
-export default SNavLink;
+export default HeaderNavLink;

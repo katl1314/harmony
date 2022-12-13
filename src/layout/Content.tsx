@@ -21,8 +21,8 @@ const Content = () => {
 const Main = styled.main`
 	width: 80%;
 	margin: 2em auto;
-	display: 'flex';
-	justify-content: 'center';
+	display: flex;
+	justify-content: center;
 `;
 
 export default Content;
