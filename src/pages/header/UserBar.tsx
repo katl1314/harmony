@@ -1,20 +1,20 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
 import { AppContext } from '@src/App';
-import HeaderNavLink from '@components/HeaderNavLink';
+import CustomNavLink from '@components/CustomNavLink';
 import Profile from '@src/components/Profile/Profile';
 const UserBar = () => {
 	const { uid, displayName, photoURL } = useContext(AppContext);
 
 	const LoginElement = !uid ? (
-		<HeaderNavLink
+		<CustomNavLink
 			to="/login"
 			background="white"
 			borderradius={30}
 			color="#000"
 		>
 			로그인
-		</HeaderNavLink>
+		</CustomNavLink>
 	) : (
 		<Profile photoURL={photoURL} displayName={displayName}></Profile>
 	);
@@ -38,6 +38,7 @@ const NavWrap = styled.nav`
 	// 테블릿
 	@media screen and (min-width: 768px) and (max-width: 1023px) {
 		display: flex;
+		align-items: center;
 		& > ul {
 			display: flex;
 			overflow: hidden;

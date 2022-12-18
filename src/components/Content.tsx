@@ -36,7 +36,7 @@ const ContentWrap = styled.div`
 
 const SummaryContentWrap = styled.div`
 	display: grid;
-	grid-template-columns: 30px 100%;
+	grid-template-columns: 5% 95%;
 	grid-template-rows: 50px;
 	align-items: center;
 `;

@@ -20,7 +20,7 @@ const Nav = () => {
 			</h1>
 			<ul>
 				<li>
-					<NavLink to={'/community'}>커뮤니티</NavLink>
+					<NavLink to={'/'}>커뮤니티</NavLink>
 				</li>
 			</ul>
 		</NavWrap>

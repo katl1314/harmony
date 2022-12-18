@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Title from '@components/Title';
-import Input from '@components/Input';
-import Textarea from '@components/Textarea';
+import Input from '@src/components/Edit/Input';
+import Textarea from '@src/components/Edit/Textarea';
 import { FormEvent, useState, useRef, useContext } from 'react';
 import Button from '@components/Button';
 import { ServiceFactory } from '@src/services/ServiceFactory';
@@ -62,7 +62,10 @@ const Form = ({ category }: { category: string }) => {
 			// 중첩 객체가 없을 경우 안전하게 접근하도록 ?.(옵셔널 체이닝)을 사용함.
 			ServiceFactory.AxiosService?.post(`${url}/`, config)
 				.then(() => {
-					navigate('/community');
+					navigate('/');
+					// useNavigate를 사용했을때 url만 변경될뿐 마운트가 발생하지 않음.
+					// window.location.reload를 통해 새로고침하자.
+					window.location.reload();
 				})
 				.catch((error) => console.error(error));
 		}
