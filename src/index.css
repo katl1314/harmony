@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 .page-active {
-	color: red;
+	font-weight: bold;
+}
+
+a {
+	text-decoration: none;
+}
+
+* {
+	border: 0px;
 }

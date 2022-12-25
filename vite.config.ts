@@ -13,7 +13,7 @@ export default defineConfig(({ command, mode }) => {
 			port: 3000,
 		},
 		plugins: [react()],
-		// 절대 경로는 여러개 등록할 수 있음.
+		// 절대 경로는 여러개 등록할 수 있음. resolve.alias [ { find : 절대경로 표현 방식, replacement : 절대경로가 위치하는 곳 resolve(__dirname, './src')}]
 		resolve: {
 			alias: [
 				{

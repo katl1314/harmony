@@ -1,6 +1,8 @@
 {
 	"compilerOptions": {
 		"baseUrl": ".", // 현재 디렉터리를 기준으로 한다.
+		// 절대 경로 설정
+		// vite react프로젝트는 tsconfig.json paths 그리고 vite.config.ts에 수정되어야함.
 		"paths": {
 			"@src/*": ["src/*"], // @src로 시작할 경우 아래 줄 디렉토리 의미 baseUrl을 기준으로 src/의 하위 디렉터리 의미,
 			"@components/*": ["src/components/*"]
