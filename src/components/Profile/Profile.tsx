@@ -3,13 +3,6 @@ import styled from 'styled-components';
 import ProfileImage from '@components/Profile/ProfileImage';
 
 const Profile = ({ photoURL, displayName }: Partial<UserType>) => {
-	/* const handlerSignout = async () => {
-		await authService.signOut();
-		sessionStorage.removeItem('user');
-		// 새로 고침 window.location.reload();
-		// BOM의 최상위 객체는 window
-		location.reload();
-	}; */
 	return (
 		<ProfileWrap>
 			<ProfileInfo>

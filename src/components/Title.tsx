@@ -1,6 +1,6 @@
 import { ReactNodeType } from '@src/types/Types';
 import styled from 'styled-components';
-
+import { memo } from 'react';
 const Title = ({ children }: { children: ReactNodeType }) => {
 	return <TitleWrap>{children}</TitleWrap>;
 };
@@ -10,4 +10,4 @@ const TitleWrap = styled.h2`
 	font-weight: bold;
 `;
 
-export default Title;
+export default memo(Title);

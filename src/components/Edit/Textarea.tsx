@@ -34,6 +34,7 @@ const InputWrap = styled.div`
 		min-height: 200px;
 		border: 1px solid skyblue;
 		padding: 0.5em;
+		box-sizing: border-box;
 	}
 `;
 

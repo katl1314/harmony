@@ -6,7 +6,7 @@ import {
 
 import { AuthServiceType } from '@src/types/Types';
 
-export class AuthService {
+class AuthService {
 	login(name: AuthServiceType) {
 		const provider = this.getProvider(name);
 		if (!provider) {
@@ -27,4 +27,10 @@ export class AuthService {
 				return null;
 		}
 	}
+
+	async logout() {
+		await authService.signOut();
+	}
 }
+
+export default AuthService;

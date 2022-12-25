@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ButtonType } from '@src/types/Types';
-
+import { memo } from 'react';
 const Button = ({
 	backColor,
 	borderRadius,
@@ -60,4 +60,4 @@ const ButtonWrap = styled.button`
 	cursor: pointer; // 커서 모양 설정
 `;
 
-export default Button;
+export default memo(Button);

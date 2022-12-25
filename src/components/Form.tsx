@@ -7,6 +7,8 @@ import Button from '@components/Button';
 import { ServiceFactory } from '@src/services/ServiceFactory';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '@src/App';
+import Select from './Edit/Select';
+
 const Form = ({ category }: { category: string }) => {
 	// useState는 React 16.8부터 지원된 훅의 일종으로, 함수형 컴포넌트로 상태값 관리가 가능해짐.
 	const [strTitle, setTitle] = useState('');
@@ -20,7 +22,7 @@ const Form = ({ category }: { category: string }) => {
 	const { uid: writerId, displayName, photoURL } = useContext(AppContext);
 
 	const navigate = useNavigate();
-	const url = `http://127.0.0.1:8080/api/board`;
+	const url = `/board`;
 
 	const handlerChangeTitle = (event: FormEvent<HTMLInputElement>) => {
 		// onChange이벤트의 event객체의 타입은 FormEvent<T>으로 해야함.
@@ -44,14 +46,10 @@ const Form = ({ category }: { category: string }) => {
 			const title: string = (inputRef.current as HTMLInputElement).value;
 			const content: string = (textareaRef.current as HTMLTextAreaElement)
 				.value;
-			const boardId = `${
-				new Date().getMilliseconds() + Math.random() * 100 + 1
-			}`;
 			const config = {
 				header: { 'Content-Type': 'application/json' },
 				params: {
 					writerId,
-					boardId,
 					title,
 					content,
 					category,
@@ -62,18 +60,24 @@ const Form = ({ category }: { category: string }) => {
 			// 중첩 객체가 없을 경우 안전하게 접근하도록 ?.(옵셔널 체이닝)을 사용함.
 			ServiceFactory.AxiosService?.post(`${url}/`, config)
 				.then(() => {
-					navigate('/');
-					// useNavigate를 사용했을때 url만 변경될뿐 마운트가 발생하지 않음.
-					// window.location.reload를 통해 새로고침하자.
-					window.location.reload();
+					navigate('/', { state: { isOk: new Date() } });
 				})
 				.catch((error) => console.error(error));
 		}
 	};
 
+	const options = {
+		jiujitsu: '주짓수',
+		travel: '여행',
+		programming: '프로그래밍',
+		baseball: '야구',
+		football: '축구',
+		basketball: '농구',
+	};
 	return (
 		<FormWrap onSubmit={postRegister}>
-			<Title>{category} 글 추가</Title>
+			<Title>글 추가</Title>
+			<Select options={options} />
 			<Input
 				id="title"
 				type="text"

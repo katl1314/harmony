@@ -7,13 +7,13 @@ import {
 } from 'react';
 
 export type BoardType = {
-	boardId: string;
+	boardId: number;
 	writerId: string;
 	title: string;
 	content: string;
 	category: string;
-	like: number;
-	createDt: Date;
+	nlike: number;
+	createDt: Date | null;
 };
 
 // event 타입은 옵셔널하게...
@@ -74,7 +74,6 @@ export type NavLinkType = {
 };
 
 export type ServiceType = {
-	header: Object;
-	body?: Object;
-	params?: Object;
+	// 인덱스 시그니처 사용 해당 속성의 키는 string, 값은 Object이어야함.
+	[id: string]: Object;
 };

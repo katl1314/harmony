@@ -37,5 +37,6 @@ const InputWrap = styled.div`
 		width: 100%;
 		border: 1px solid skyblue;
 		padding: 0.5em;
+		box-sizing: border-box;
 	}
 `;

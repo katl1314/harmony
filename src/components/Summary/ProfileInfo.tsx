@@ -1,7 +1,7 @@
 import { BoardType, UserType } from '@src/types/Types';
 import styled from 'styled-components';
 
-const SummaryWriterView = ({
+const ProfileInfo = ({
 	displayName,
 	createDt,
 }: Partial<BoardType & UserType>) => {
@@ -33,13 +33,15 @@ const SummaryWriterView = ({
 	);
 };
 
-export default SummaryWriterView;
+export default ProfileInfo;
 
 const WriterWrap = styled.div`
 	display: flex;
-	margin: 0.1em;
+	/* column-gap : 컬럼간 간격을 설정 할 수 있음. */
+	column-gap: 5px;
 
 	& > div {
 		padding: 0.2em;
+		font-size: 0.8rem;
 	}
 `;

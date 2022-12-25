@@ -35,7 +35,6 @@ function App() {
 	const [user, setUser] = useReducer(userReducer, initLoginInfo);
 
 	useEffect(() => {
-		// 로그인이 성공하면 firebaseApp.auth().onAuthStateChanged이벤트 핸들러 실행함.
 		persistentAuth();
 	}, []);
 
@@ -52,28 +51,25 @@ function App() {
 				header: { 'Content-Type': 'application/json' },
 				params: { displayName, email, photoURL, uid },
 			};
-			await ServiceFactory.AxiosService.post(
-				'http://localhost:8080/api/user/register',
-				config
-			);
+			await ServiceFactory.AxiosService.post('/user/register', config);
 		}
 	};
 	return (
 		<AppContext.Provider value={user}>
 			<div className="App">
 				<Header />
-				<Main>
+				<Body>
 					<Routes>
 						<Route path="/login" element={<Login />}></Route>
 						<Route path="/*" element={<Community />}></Route>
 					</Routes>
-				</Main>
+				</Body>
 			</div>
 		</AppContext.Provider>
 	);
 }
 
-const Main = styled.main`
+const Body = styled.main`
 	width: 80%;
 	margin: 2em auto;
 	display: flex;

@@ -1,44 +1,41 @@
 import { BoardType, UserType } from '@src/types/Types';
 import styled from 'styled-components';
 import Summary from '@components/Summary';
-import SummaryTitle from '@components/Summary/SummaryTitle';
+import SummaryBody from '@components/Summary/SummaryBody';
 import ProfileImage from '@components/Profile/ProfileImage';
-import SummaryWriterView from '@components/Summary/SummaryWriterView';
-const Content = ({ datas }: { datas: Array<BoardType & UserType> }) => {
-	const BoardList = datas.map((data: BoardType & UserType) => {
+import ProfileInfo from '@components/Summary/ProfileInfo';
+import SummaryFooter from '@components/Summary/SummaryFooter';
+import CategoryView from '@components/Summary/CategoryView';
+import LikeView from '@components/Summary/LikeView';
+const Content = ({ data }: { data: Array<BoardType & UserType> }) => {
+	const BoardList = data.map((d: BoardType & UserType) => {
 		return (
-			<ContentWrap key={`${data.boardId}`}>
-				<Summary>
-					<SummaryContentWrap>
-						<ProfileImage
-							displayName={data.displayName}
-							photoURL={data.photoURL}
-							width={30}
-							height={30}
-						/>
-						<SummaryWriterView
-							displayName={data.displayName}
-							createDt={data.createDt}
-						/>
-					</SummaryContentWrap>
-					<SummaryTitle title={data.title} boardId={data.boardId} />
-				</Summary>
-			</ContentWrap>
+			<Summary key={`${d.boardId}`}>
+				<SummaryHeader>
+					<ProfileImage
+						displayName={d.displayName}
+						photoURL={d.photoURL}
+						width={20}
+						height={20}
+					/>
+					<ProfileInfo displayName={d.displayName} createDt={d.createDt} />
+				</SummaryHeader>
+				<SummaryBody title={d.title} boardId={d.boardId} />
+				<SummaryFooter>
+					<CategoryView category={d.category} />
+					<LikeView like={d.nlike} />
+				</SummaryFooter>
+			</Summary>
 		);
 	});
 	return <div>{BoardList}</div>;
 };
 
-const ContentWrap = styled.div`
-	display: flex;
-	border-bottom: 1px solid #e5e5e5;
-`;
-
-const SummaryContentWrap = styled.div`
+const SummaryHeader = styled.div`
 	display: grid;
-	grid-template-columns: 5% 95%;
-	grid-template-rows: 50px;
-	align-items: center;
+	grid-template-columns: 3% 97%;
+	grid-template-rows: 20px;
+	gap: 10px;
 `;
 
 export default Content;
