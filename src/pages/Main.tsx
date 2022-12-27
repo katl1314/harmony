@@ -5,14 +5,18 @@ import View from '@components/View';
 import Content from '@components/Content';
 import Page from '@components/Page/Page';
 import { usePage } from '@src/hooks/usePage';
+import { useEffect } from 'react';
 
 const Main = ({ category }: { category: string }) => {
-	const [data, setPageChange] = usePage(1, category);
-
+	const [data, refetch, setPageChange] = usePage(1, category);
 	const totalCnt = data?.totalCnt;
 	const currentPage = data?.offset;
 	const responseData = data?.responseData;
 
+	useEffect(() => {
+		// 서버의 데이터가 갱신되면 refetch한다.
+		refetch();
+	}, [responseData]);
 	// 페이지 체인지 이벤트
 	const fnPageChange = (page: number) => {
 		setPageChange(page);
