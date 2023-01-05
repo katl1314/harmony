@@ -3,13 +3,7 @@ import styled from 'styled-components';
 import { forwardRef, ForwardedRef } from 'react';
 const Textarea = forwardRef(
 	(
-		{
-			id,
-			placeholder,
-			onChange,
-			value,
-			required,
-		}: TextareaType<HTMLTextAreaElement>,
+		{ id, placeholder, onChange, value }: TextareaType<HTMLTextAreaElement>,
 		ref: ForwardedRef<HTMLTextAreaElement>
 	) => {
 		return (
@@ -19,7 +13,6 @@ const Textarea = forwardRef(
 					onChange={onChange}
 					placeholder={placeholder}
 					value={value}
-					required={required}
 					ref={ref}
 				></textarea>
 			</InputWrap>

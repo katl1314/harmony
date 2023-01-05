@@ -6,7 +6,7 @@ const View = ({
 	children: ReactNodeType;
 	totalCnt: number;
 }) => {
-	return <>{totalCnt > 0 ? <>{children}</> : <div>데이터가 없습니다.</div>}</>;
+	return <>{totalCnt && <>{children}</>}</>;
 };
 
 export default View;

@@ -34,12 +34,12 @@ const Main = ({ category }: { category: string }) => {
 				</CustomNavLink>
 			</Controller>
 			<View totalCnt={totalCnt}>
+				<Content data={responseData} />
 				<Page
 					pageChangeEvent={fnPageChange}
 					totalCnt={totalCnt}
 					currentPage={currentPage}
 				/>
-				<Content data={responseData} />
 			</View>
 		</Board>
 	);

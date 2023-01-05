@@ -35,7 +35,10 @@ const SummaryHeader = styled.div`
 	display: grid;
 	grid-template-columns: 3% 97%;
 	grid-template-rows: 20px;
-	gap: 10px;
+	// PC
+	@media screen and (max-width: 767px) {
+		gap: 10px;
+	}
 `;
 
 export default Content;

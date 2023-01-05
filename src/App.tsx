@@ -52,8 +52,8 @@ function App() {
 			const { displayName, email, photoURL, uid } = data;
 			const url = '/user/register';
 			setUser({ displayName, email, photoURL, uid });
-			const params = { displayName, email, photoURL, uid };
-			await service.post(url, null, { params });
+			const body = { displayName, email, photoURL, uid };
+			await service.post(url, body);
 		}
 	};
 	return (
