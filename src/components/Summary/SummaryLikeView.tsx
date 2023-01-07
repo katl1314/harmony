@@ -1,11 +1,12 @@
+import { ReactNodeType } from '@src/types/Types';
 import { BiLike } from 'react-icons/bi';
 import styled from 'styled-components';
 
-const LikeView = ({ like }: { like: number }) => {
+const SummaryLikeView = ({ children }: { children: ReactNodeType }) => {
 	return (
 		<LikeViewWrap>
 			<BiLike size={20} />
-			<span>{like}</span>
+			<span>{children}</span>
 		</LikeViewWrap>
 	);
 };
@@ -20,4 +21,4 @@ const LikeViewWrap = styled.div`
 	}
 `;
 
-export default LikeView;
+export default SummaryLikeView;

@@ -72,10 +72,14 @@ function App() {
 }
 
 const Body = styled.main`
-	width: 80%;
 	margin: 2em auto;
 	display: flex;
 	justify-content: center;
+
+	// 태블릿
+	@media screen and (max-width: 1023px) {
+		width: 80%;
+	}
 `;
 
 export default App;

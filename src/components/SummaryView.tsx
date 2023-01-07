@@ -1,11 +1,34 @@
-import { ReactNodeType } from '@src/types/Types';
 import styled from 'styled-components';
-
-const Summary = ({ children }: { children: ReactNodeType }) => {
-	return <SummaryWrap>{children}</SummaryWrap>;
+import { BoardType, UserType } from '@src/types/Types';
+import { Summary } from './Summary';
+import ProfileImage from '@components/Profile/ProfileImage';
+import ProfileInfo from '@components/Summary/ProfileInfo';
+const SummaryView = ({
+	data: { boardId, displayName, photoURL, createDt, title, category, nlike },
+}: {
+	data: BoardType & UserType;
+}) => {
+	return (
+		<SummaryMain key={`${boardId}`}>
+			<Summary.Header>
+				<ProfileImage
+					displayName={displayName}
+					photoURL={photoURL}
+					width={20}
+					height={20}
+				/>
+				<ProfileInfo displayName={displayName} createDt={createDt} />
+			</Summary.Header>
+			<Summary.Body title={title} boardId={boardId} />
+			<Summary.Footer>
+				<Summary.CategoryView>{category}</Summary.CategoryView>
+				<Summary.LikeView>{nlike}</Summary.LikeView>
+			</Summary.Footer>
+		</SummaryMain>
+	);
 };
 
-const SummaryWrap = styled.div`
+const SummaryMain = styled.div`
 	margin: auto 0;
 	height: 70px;
 	display: flex; /* flex속성 사용 (1차원 요소 배치) */
@@ -45,4 +68,4 @@ const SummaryWrap = styled.div`
 	}
 `;
 
-export default Summary;
+export default SummaryView;

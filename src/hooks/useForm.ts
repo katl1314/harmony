@@ -1,4 +1,4 @@
-import { useState, useEffect, SyntheticEvent, MutableRefObject } from 'react';
+import { useState, useEffect, SyntheticEvent } from 'react';
 // 서버에서 데이터를 패칭하는 것은 useQuery Hook을 이용하여 처리하였음.
 
 /**
