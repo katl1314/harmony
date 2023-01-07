@@ -3,11 +3,15 @@ import { UserType } from './types/Types';
 import { createContext, useReducer, useEffect } from 'react';
 import { userReducer } from '@src/store/userReducer';
 import { authService } from './firebase.config';
-import { ServiceFactory } from './services/ServiceFactory';
+import { service } from '@src/services/AxiosService';
 import Login from '@src/pages/Login';
 import { Routes, Route } from 'react-router-dom';
 import Community from '@src/pages/content/Community';
 import styled from 'styled-components';
+
+// zustand only test => to recoil
+// import useStore from '@src/store/store';
+
 // Object.keys sessionStorage는 Object이며 key로 구성된 배열을 반환함.
 const sessionStorageKey = Object.keys(sessionStorage);
 let isLogin = false;
@@ -46,12 +50,10 @@ function App() {
 	const authStateChanged = async (data: UserType) => {
 		if (data) {
 			const { displayName, email, photoURL, uid } = data;
+			const url = '/user/register';
 			setUser({ displayName, email, photoURL, uid });
-			const config = {
-				header: { 'Content-Type': 'application/json' },
-				params: { displayName, email, photoURL, uid },
-			};
-			await ServiceFactory.AxiosService.post('/user/register', config);
+			const body = { displayName, email, photoURL, uid };
+			await service.post(url, body);
 		}
 	};
 	return (
@@ -70,10 +72,14 @@ function App() {
 }
 
 const Body = styled.main`
-	width: 80%;
 	margin: 2em auto;
 	display: flex;
 	justify-content: center;
+
+	// 태블릿
+	@media screen and (max-width: 1023px) {
+		width: 80%;
+	}
 `;
 
 export default App;

@@ -3,14 +3,7 @@ import styled from 'styled-components';
 import { forwardRef, ForwardedRef } from 'react';
 const Input = forwardRef(
 	(
-		{
-			id,
-			type,
-			placeholder,
-			onChange,
-			value,
-			required,
-		}: InputType<HTMLInputElement>,
+		{ id, type, placeholder, onChange, value }: InputType<HTMLInputElement>,
 		ref: ForwardedRef<HTMLInputElement>
 	) => {
 		return (
@@ -21,7 +14,6 @@ const Input = forwardRef(
 					onChange={onChange}
 					placeholder={placeholder}
 					value={value}
-					required={required}
 					ref={ref}
 				></input>
 			</InputWrap>
