@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { QueryFunctionContext, useQuery } from 'react-query';
 import { service } from '@src/services/AxiosService';
-import { Arrays } from '@src/utils';
 
 export const usePage = (
 	initPage: number,
@@ -14,14 +13,9 @@ export const usePage = (
 		// ctx : useQuery함수의 첫번째 인자값. (key)
 		// key의 역할은 React Query가 query캐싱을 관리할 수 있도록 도와줌.
 		// 서버에 데이터를 요청하기 전 key에 대한 결과가 이미 존재하면 추가 요청을 하지 않는다.
-		const { queryKey } = ctx;
-		if (!Arrays.isArray(queryKey) || Arrays.isEmpty(queryKey)) {
-			// queryKey가 배열이 아니거나, 빈배열이면 null을 리턴한다.
-			return null;
-		}
-
+		const { queryKey: key } = ctx;
 		// queryKey가 배열일때
-		let currentPage: number = queryKey[1] as number; // const는 블록 스코프임.
+		let currentPage: number = key[1] as number; // const는 블록 스코프임.
 		let offset = makePageOffset(currentPage);
 
 		const params = { offset, limit };
@@ -45,5 +39,14 @@ export const usePage = (
 	const changePageHandler = (page: number) => {
 		setCurrentPage(page);
 	};
-	return [data?.data, refetch, changePageHandler];
+
+	return [
+		{
+			...data?.data,
+			currentPage,
+			pages: Math.ceil(data?.data.totalCnt / limit),
+		},
+		refetch,
+		changePageHandler,
+	];
 };

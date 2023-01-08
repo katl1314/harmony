@@ -10,7 +10,8 @@ import styled from 'styled-components';
 const Main = ({ category }: { category: string }) => {
 	const [data, refetch, setPageChange] = usePage(1, category);
 	const totalCnt = data?.totalCnt;
-	const currentPage = data?.offset;
+	const pages = data?.pages;
+	const currentPage = data?.currentPage;
 	const responseData = data?.responseData;
 
 	useEffect(() => {
@@ -20,6 +21,7 @@ const Main = ({ category }: { category: string }) => {
 	// 페이지 체인지 이벤트
 	const fnPageChange = (page: number) => {
 		setPageChange(page);
+		window.scrollTo(0, 0);
 	};
 	return (
 		<ViewLayout>
@@ -37,7 +39,7 @@ const Main = ({ category }: { category: string }) => {
 				<Content data={responseData} />
 				<Page
 					pageChangeEvent={fnPageChange}
-					totalCnt={totalCnt}
+					pages={pages}
 					currentPage={currentPage}
 				/>
 			</View>
