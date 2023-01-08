@@ -16,7 +16,6 @@ const Login = () => {
 
 	return (
 		<WrapLogin>
-			<Title>로그인</Title>
 			<ButtonWrap>
 				<Button
 					type="normal"

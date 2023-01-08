@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Title from '@components/Title';
 import Input from '@src/components/Edit/Input';
 import Textarea from '@src/components/Edit/Textarea';
 import Button from '@components/Button';
@@ -51,7 +50,6 @@ const Form = ({ category }: { category: string }) => {
 
 	return (
 		<FormWrap onSubmit={handlerSubmit}>
-			<Title>글 추가</Title>
 			<Input
 				id="title"
 				type="text"
