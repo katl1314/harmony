@@ -5,44 +5,49 @@ interface IPage {
 	pageChangeEvent: (page: number) => void;
 	pages: number;
 	currentPage: number;
+	count?: number;
 }
 
-export const PageContext = createContext<
-	(IPage & { firstPage: number }) | null
->(null);
+interface IPageContext extends IPage {
+	firstPage: number;
+}
 
-const Page = memo(({ pageChangeEvent, pages, currentPage }: IPage) => {
-	// Page UI는 totalCnt가 undefined일때 의미가 없기 때문에 undefined에 대한 분기 처리가 필요함.
-	const [firstPage, setFirstPage] = useState(1);
+export const PageContext = createContext<IPageContext | null>(null);
 
-	const handlerPrevPage = () => {
-		if (firstPage <= 1) {
-			return;
-		}
-		setFirstPage(firstPage - 5);
-		pageChangeEvent(firstPage - 5);
-	};
+const Page = memo(
+	({ pageChangeEvent, pages, currentPage, count = 10 }: IPage) => {
+		// Page UI는 totalCnt가 undefined일때 의미가 없기 때문에 undefined에 대한 분기 처리가 필요함.
 
-	const handlerNextPage = () => {
-		if (firstPage > pages) {
-			return;
-		}
-		setFirstPage(firstPage + 5);
-		pageChangeEvent(firstPage + 5);
-	};
+		const [firstPage, setFirstPage] = useState(1);
+		const handlerPrevPage = () => {
+			if (firstPage <= 1) {
+				return;
+			}
+			setFirstPage(firstPage - count);
+			pageChangeEvent(firstPage - count);
+		};
 
-	return (
-		<PageContext.Provider
-			value={{ pageChangeEvent, pages, currentPage, firstPage }}
-		>
-			<PageLayout>
-				<PageButton onClick={handlerPrevPage}>이전</PageButton>
-				<PageList />
-				<PageButton onClick={handlerNextPage}>다음</PageButton>
-			</PageLayout>
-		</PageContext.Provider>
-	);
-});
+		const handlerNextPage = () => {
+			if (firstPage + count > pages) {
+				return;
+			}
+			setFirstPage(firstPage + count);
+			pageChangeEvent(firstPage + count);
+		};
+
+		return (
+			<PageContext.Provider
+				value={{ pageChangeEvent, pages, currentPage, firstPage, count }}
+			>
+				<PageLayout>
+					<PageButton onClick={handlerPrevPage}>이전</PageButton>
+					<PageList />
+					<PageButton onClick={handlerNextPage}>다음</PageButton>
+				</PageLayout>
+			</PageContext.Provider>
+		);
+	}
+);
 
 // 페이지 UI
 const PageList = () => {
@@ -50,9 +55,18 @@ const PageList = () => {
 	if (pageContext) {
 		const currentPage = pageContext.currentPage;
 		const firstPage = pageContext.firstPage;
+		const pages = pageContext.pages;
+		const displayCount: number = pageContext.count as number;
 		const pageChangeEvent = pageContext.pageChangeEvent;
 
-		const pageItem = Array(5)
+		const count =
+			pages < displayCount
+				? pages
+				: firstPage + displayCount > pages
+				? pages - firstPage + 1
+				: displayCount;
+
+		const pageItem = Array(count)
 			.fill(null)
 			.map((_, i) => {
 				const page = i + firstPage;
@@ -79,6 +93,7 @@ const PageLayout = styled.div`
 	/* gap : flex item간 간격 */
 	gap: 1rem;
 	margin-top: 1rem;
+	justify-content: center;
 `;
 
 const PageItems = styled.div`

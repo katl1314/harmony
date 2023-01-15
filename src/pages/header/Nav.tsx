@@ -1,23 +1,15 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { GiHamburgerMenu } from 'react-icons/gi';
-
 const Nav = () => {
 	return (
 		<NavWrap>
 			<MobileNavbar>
 				<GiHamburgerMenu size={32} />
 			</MobileNavbar>
-			<h1
-				style={{
-					lineHeight: '50px',
-					fontSize: '20px',
-					fontWeight: 700,
-					marginLeft: '1em',
-				}}
-			>
+			<StyleH1>
 				<a href="/">harmony</a>
-			</h1>
+			</StyleH1>
 			<ul>
 				<li>
 					<NavLink to={'/'}>커뮤니티</NavLink>
@@ -26,6 +18,13 @@ const Nav = () => {
 		</NavWrap>
 	);
 };
+
+const StyleH1 = styled.h1`
+	line-height: 50px;
+	font-weight: 700;
+	margin-left: 1em;
+	font-size: 20px;
+`;
 
 const NavWrap = styled.nav`
 	// PC
@@ -50,7 +49,6 @@ const NavWrap = styled.nav`
 				}
 
 				& > a.active {
-					background-color: #f4f6fa;
 					color: #009ef7;
 					border-radius: 10px;
 				}
@@ -89,7 +87,6 @@ const NavWrap = styled.nav`
 				}
 
 				& > a.active {
-					background-color: #f4f6fa;
 					color: #009ef7;
 					border-radius: 10px;
 				}

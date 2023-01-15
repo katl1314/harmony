@@ -40,6 +40,7 @@ const Main = ({ category }: { category: string }) => {
 				<Page
 					pageChangeEvent={fnPageChange}
 					pages={pages}
+					count={5}
 					currentPage={currentPage}
 				/>
 			</View>
