@@ -3,12 +3,12 @@ import CustomNavLink from '@components/CustomNavLink';
 import View from '@components/View';
 import Content from '@components/Content';
 import Page from '@components/Page/Page';
-import { usePage } from '@src/hooks/usePage';
+import { useFetch } from '@src/hooks/useFetch';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const Main = ({ category }: { category: string }) => {
-	const [data, refetch, setPageChange] = usePage(1, category);
+	const [data, refetch, setPageChange] = useFetch(1, category);
 	const totalCnt = data?.totalCnt;
 	const pages = data?.pages;
 	const currentPage = data?.currentPage;

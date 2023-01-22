@@ -73,8 +73,8 @@ const FormWrap = styled.form`
 `;
 
 interface IButton {
-	type: 'submit' | 'button',
-	children: string,
+	type: 'submit' | 'button';
+	children: string;
 	size?: 'sm' | 'md' | 'lg';
 	backColor?: string | null;
 	fontColor?: string | null;
@@ -83,11 +83,26 @@ interface IButton {
 
 // ts와 styled-component를 같이 쓸 경우 임의의 속성을 사용하면서 No overload mathces this call에러 발생
 // overload은 동일한 함수에서 들어오는 매개변수의 type에 따라 다른 프로세스를 진행함.
-const Button = ({ children, size="md", type='button', backColor = '#74c3ff', fontColor = '#000', borderRadius = null }: IButton) => {
+const Button = ({
+	children,
+	size = 'md',
+	type = 'button',
+	backColor = '#74c3ff',
+	fontColor = '#000',
+	borderRadius = null,
+}: IButton) => {
 	return (
-		<StyledButton type={type} size={size} backColor={backColor} fontColor={fontColor} borderRadius={borderRadius}>{children}</StyledButton>
+		<StyledButton
+			type={type}
+			size={size}
+			backColor={backColor}
+			fontColor={fontColor}
+			borderRadius={borderRadius}
+		>
+			{children}
+		</StyledButton>
 	);
-}
+};
 
 const StyledButton = styled.button<IButton>`
 	background-color: ${({ backColor }: IButton) => backColor ?? '#ffffff'};

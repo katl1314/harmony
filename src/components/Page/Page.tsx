@@ -1,88 +1,101 @@
-import { memo, useContext, createContext, useState } from 'react';
+import { memo, useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { pageInfoSelector } from '@src/atoms/atoms';
 
-interface IPage {
+export interface IPage {
 	pageChangeEvent: (page: number) => void;
 	pages: number;
 	currentPage: number;
 	count?: number;
+	firstPage?: number;
 }
-
-interface IPageContext extends IPage {
-	firstPage: number;
-}
-
-export const PageContext = createContext<IPageContext | null>(null);
 
 const Page = memo(
 	({ pageChangeEvent, pages, currentPage, count = 10 }: IPage) => {
-		// Page UI는 totalCnt가 undefined일때 의미가 없기 때문에 undefined에 대한 분기 처리가 필요함.
-
 		const [firstPage, setFirstPage] = useState(1);
-		const handlerPrevPage = () => {
+		const [_, setPageSelector] = useRecoilState(pageInfoSelector);
+
+		useEffect(() => {
+			setPageSelector({
+				pageChangeEvent,
+				pages,
+				currentPage,
+				firstPage,
+				count,
+			});
+		}, [currentPage]);
+
+		const handlerPrevPage = useCallback(() => {
 			if (firstPage <= 1) {
 				return;
 			}
 			setFirstPage(firstPage - count);
 			pageChangeEvent(firstPage - count);
-		};
+		}, [count, firstPage]);
 
-		const handlerNextPage = () => {
+		const handlerNextPage = useCallback(() => {
 			if (firstPage + count > pages) {
 				return;
 			}
 			setFirstPage(firstPage + count);
 			pageChangeEvent(firstPage + count);
-		};
+		}, [count, firstPage]);
 
 		return (
-			<PageContext.Provider
-				value={{ pageChangeEvent, pages, currentPage, firstPage, count }}
-			>
-				<PageLayout>
-					<PageButton onClick={handlerPrevPage}>이전</PageButton>
-					<PageList />
-					<PageButton onClick={handlerNextPage}>다음</PageButton>
-				</PageLayout>
-			</PageContext.Provider>
+			<PageLayout>
+				<PageButton onClick={handlerPrevPage}>이전</PageButton>
+				<PageList />
+				<PageButton onClick={handlerNextPage}>다음</PageButton>
+			</PageLayout>
 		);
 	}
 );
 
 // 페이지 UI
 const PageList = () => {
-	const pageContext = useContext(PageContext);
-	if (pageContext) {
-		const currentPage = pageContext.currentPage;
-		const firstPage = pageContext.firstPage;
-		const pages = pageContext.pages;
-		const displayCount: number = pageContext.count as number;
-		const pageChangeEvent = pageContext.pageChangeEvent;
+	const [pageSelector] = useRecoilState(pageInfoSelector);
+	const firstPage = pageSelector?.firstPage ?? 0;
+	const pages = pageSelector?.pages ?? 0;
+	const count = pageSelector?.count ?? 0;
 
-		const count =
-			pages < displayCount
-				? pages
-				: firstPage + displayCount > pages
-				? pages - firstPage + 1
-				: displayCount;
+	const displayCount: number =
+		pages < count
+			? pages
+			: firstPage + count > pages
+			? pages - firstPage + 1
+			: count;
 
-		const pageItem = Array(count)
-			.fill(null)
-			.map((_, i) => {
-				const page = i + firstPage;
-				return (
-					<PageButton
-						key={`page_${page}`}
-						onClick={pageChangeEvent?.bind(null, page)}
-						className={page === currentPage ? 'active' : ''}
-					>
-						{page}
-					</PageButton>
-				);
-			});
-		return <PageItems>{pageItem}</PageItems>;
-	}
-	return <></>;
+	return (
+		<PageItems>
+			<PageItem displayCount={displayCount} />
+		</PageItems>
+	);
+};
+
+const PageItem = ({ displayCount }: { displayCount: number }) => {
+	const [pageSelector] = useRecoilState(pageInfoSelector);
+	const firstPage = pageSelector?.firstPage ?? 0;
+	const currentPage = pageSelector?.currentPage ?? 0;
+	const pageChangeEvent = pageSelector?.pageChangeEvent;
+	return (
+		<>
+			{Array(displayCount)
+				.fill(null)
+				.map((_, i) => {
+					const page = i + firstPage;
+					return (
+						<PageButton
+							key={`page_${page}`}
+							onClick={pageChangeEvent?.bind(null, page)}
+							className={page === currentPage ? 'active' : ''}
+						>
+							{page}
+						</PageButton>
+					);
+				})}
+		</>
+	);
 };
 
 const PageLayout = styled.div`
@@ -90,8 +103,6 @@ const PageLayout = styled.div`
 	height: 30px;
 	line-height: 30px;
 	align-items: center;
-	/* gap : flex item간 간격 */
-	gap: 1rem;
 	margin-top: 1rem;
 	justify-content: center;
 `;
