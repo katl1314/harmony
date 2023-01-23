@@ -75,11 +75,7 @@ const Body = styled.main`
 	margin: 2em auto;
 	display: flex;
 	justify-content: center;
-
-	// 태블릿
-	@media screen and (max-width: 1023px) {
-		width: 80%;
-	}
+	max-width: 80rem;
 `;
 
 export default App;

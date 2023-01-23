@@ -1,8 +1,6 @@
 import styled from 'styled-components';
-import Title from '@components/Title';
 import Input from '@src/components/Edit/Input';
 import Textarea from '@src/components/Edit/Textarea';
-import Button from '@components/Button';
 import { useForm } from '@src/hooks/useForm';
 import { service } from '@src/services/AxiosService';
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +49,6 @@ const Form = ({ category }: { category: string }) => {
 
 	return (
 		<FormWrap onSubmit={handlerSubmit}>
-			<Title>글 추가</Title>
 			<Input
 				id="title"
 				type="text"
@@ -73,6 +70,46 @@ const Form = ({ category }: { category: string }) => {
 const FormWrap = styled.form`
 	width: 100%;
 	margin: 2em auto;
+`;
+
+interface IButton {
+	type: 'submit' | 'button';
+	children: string;
+	size?: 'sm' | 'md' | 'lg';
+	backColor?: string | null;
+	fontColor?: string | null;
+	borderRadius?: number | null;
+}
+
+// ts와 styled-component를 같이 쓸 경우 임의의 속성을 사용하면서 No overload mathces this call에러 발생
+// overload은 동일한 함수에서 들어오는 매개변수의 type에 따라 다른 프로세스를 진행함.
+const Button = ({
+	children,
+	size = 'md',
+	type = 'button',
+	backColor = '#74c3ff',
+	fontColor = '#000',
+	borderRadius = null,
+}: IButton) => {
+	return (
+		<StyledButton
+			type={type}
+			size={size}
+			backColor={backColor}
+			fontColor={fontColor}
+			borderRadius={borderRadius}
+		>
+			{children}
+		</StyledButton>
+	);
+};
+
+const StyledButton = styled.button<IButton>`
+	background-color: ${({ backColor }: IButton) => backColor ?? '#ffffff'};
+	color: ${({ fontColor }: IButton) => fontColor ?? '#000000'};
+	border-radius: ${({ borderRadius }: IButton) => borderRadius ?? '0px'};
+	padding: 0.7em 1em;
+	cursor: pointer;
 `;
 
 export default Form;

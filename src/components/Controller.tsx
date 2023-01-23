@@ -11,6 +11,8 @@ const Controller = ({ children }: { children: ReactNode }) => {
 
 const ControllerWrap = styled.div`
 	margin: 1em 0;
+	display: flex;
+	justify-content: space-between;
 `;
 
 export default Controller;

@@ -1,8 +1,7 @@
 import { UserType } from '@src/types/Types';
 import { ReactElement } from 'react';
-import styled from 'styled-components';
 
-const ProfileImage = ({
+const ImageView = ({
 	photoURL,
 	displayName,
 	width = 40,
@@ -19,18 +18,10 @@ const ProfileImage = ({
 		return null;
 	}
 	return (
-		<ProfileImageWrap>
+		<span>
 			<img src={photoURL} alt={displayName} width={width} height={height} />
-		</ProfileImageWrap>
+		</span>
 	);
 };
 
-export default ProfileImage;
-
-const ProfileImageWrap = styled.span`
-	display: inline-block;
-	margin: 0 auto;
-	& > img {
-		border-radius: 50%;
-	}
-`;
+export default ImageView;

@@ -1,6 +1,6 @@
 import moment from 'moment';
 import 'moment/dist/locale/ko';
-
+// moment 한국어 설정
 moment.locale('ko');
 
 export class Arrays {
@@ -17,7 +17,8 @@ export class Arrays {
 
 export class Dates {
 	static fromNow(date: Date, format: string) {
-		return moment(date, format).lang('ko').fromNow();
+		// return moment(date, format).lang('ko').fromNow();
+		return moment(date, format).fromNow();
 	}
 }
 
