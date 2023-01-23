@@ -54,7 +54,7 @@ const PageList = () => {
 	const currentPage = pageState?.currentPage ?? 0;
 	const pages = pageState?.pages ?? 0;
 	const count = pageState?.count ?? 0;
-	const firstPage = pageState?.firstPage ?? 0;
+	const firstPage = pageState?.firstPage;
 
 	const displayCount: number =
 		pages < count
@@ -76,6 +76,7 @@ const PageList = () => {
 				.fill(null)
 				.map((_, i) => {
 					const page = i + firstPage;
+					console.log(i, firstPage);
 					return (
 						<PageButton
 							key={`page_${page}`}
