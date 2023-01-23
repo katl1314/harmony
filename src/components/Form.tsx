@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import Input from '@src/components/Edit/Input';
-import Textarea from '@src/components/Edit/Textarea';
 import { useForm } from '@src/hooks/useForm';
 import { service } from '@src/services/AxiosService';
 import { useNavigate } from 'react-router-dom';
-import { useRef, useContext } from 'react';
+import { useRef, useContext, ReactNode } from 'react';
 import { AppContext } from '@src/App';
+import Input from '@src/components/Edit/Input';
+import TextEditorForm from './Edit/TextEditorForm';
 
 const Form = ({ category }: { category: string }) => {
 	const navigate = useNavigate();
@@ -49,27 +49,54 @@ const Form = ({ category }: { category: string }) => {
 
 	return (
 		<FormWrap onSubmit={handlerSubmit}>
-			<Input
-				id="title"
-				type="text"
-				value={value.title ?? ''}
-				onChange={handlerChange}
-				ref={titleRef}
-			></Input>
-			<Textarea
-				id="content"
-				value={value.content ?? ''}
-				onChange={handlerChange}
-				ref={contentRef}
-			></Textarea>
-			<Button type="submit">글 쓰기</Button>
+			<FormItem>
+				<Label>
+					<label htmlFor="title">제목</label>
+				</Label>
+				<Input
+					id="title"
+					type="text"
+					value={value.title ?? ''}
+					onChange={handlerChange}
+					ref={titleRef}
+					placeholder={'제목을 입력하세요.'}
+				></Input>
+			</FormItem>
+			<FormItem>
+				<Label>
+					<label>내용</label>
+				</Label>
+				<TextEditorForm ref={contentRef} />
+			</FormItem>
+			<FormItem>
+				<Button type="submit">글 쓰기</Button>
+			</FormItem>
 		</FormWrap>
 	);
 };
 
+const FormItem = ({ children }: { children: ReactNode[] | ReactNode }) => {
+	return <FormItemWrap>{children}</FormItemWrap>;
+};
+
 const FormWrap = styled.form`
-	width: 100%;
-	margin: 2em auto;
+	width: 80%;
+	margin: 1rem;
+	@media screen and (max-width: 767px) {
+		width: 100%;
+	}
+`;
+
+const FormItemWrap = styled.div`
+	width: auto;
+	margin: 1em;
+`;
+
+const Label = styled.p`
+	font-size: 0.875rem;
+	font-weight: bold;
+	color: #5d5d5d;
+	margin: 0.5rem 0;
 `;
 
 interface IButton {
