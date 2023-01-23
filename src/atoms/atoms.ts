@@ -2,9 +2,13 @@ import { IPage } from '@components/Page/Page';
 import { atom, selector } from 'recoil';
 
 // recoil 상태 값
-export const initPageAtoms = atom<IPage | null>({
+export const initPageAtoms = atom<IPage>({
 	key: 'pageContext',
-	default: null,
+	default: {
+		pages: 0,
+		currentPage: 1,
+		count: 0,
+	},
 });
 
 export const pageInfoSelector = selector<any>({

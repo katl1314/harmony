@@ -1,63 +1,60 @@
-import { memo, useEffect, useState, useCallback } from 'react';
+import { memo, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { pageInfoSelector } from '@src/atoms/atoms';
 
 export interface IPage {
-	pageChangeEvent: (page: number) => void;
 	pages: number;
-	currentPage: number;
 	count?: number;
+	currentPage?: number;
 	firstPage?: number;
 }
 
-const Page = memo(
-	({ pageChangeEvent, pages, currentPage, count = 10 }: IPage) => {
-		const [firstPage, setFirstPage] = useState(1);
-		const [_, setPageSelector] = useRecoilState(pageInfoSelector);
+const Page = memo(({ pages, count = 10 }: IPage) => {
+	const [pageState, setPage] = useRecoilState(pageInfoSelector);
+	const firstPage = pageState?.firstPage ?? pageState?.currentPage;
+	useEffect(() => {
+		setPage({ ...pageState, pages, count });
+	}, []);
 
-		useEffect(() => {
-			setPageSelector({
-				pageChangeEvent,
-				pages,
-				currentPage,
-				firstPage,
-				count,
-			});
-		}, [currentPage]);
+	const handlerPrevPage = () => {
+		if (firstPage <= 1) {
+			return;
+		}
+		setPage({
+			...pageState,
+			currentPage: firstPage - count,
+			firstPage: firstPage - count,
+		});
+	};
 
-		const handlerPrevPage = useCallback(() => {
-			if (firstPage <= 1) {
-				return;
-			}
-			setFirstPage(firstPage - count);
-			pageChangeEvent(firstPage - count);
-		}, [count, firstPage]);
+	const handlerNextPage = () => {
+		if (firstPage + count > pages) {
+			return;
+		}
+		setPage({
+			...pageState,
+			currentPage: firstPage + count,
+			firstPage: firstPage + count,
+		});
+	};
 
-		const handlerNextPage = useCallback(() => {
-			if (firstPage + count > pages) {
-				return;
-			}
-			setFirstPage(firstPage + count);
-			pageChangeEvent(firstPage + count);
-		}, [count, firstPage]);
-
-		return (
-			<PageLayout>
-				<PageButton onClick={handlerPrevPage}>이전</PageButton>
-				<PageList />
-				<PageButton onClick={handlerNextPage}>다음</PageButton>
-			</PageLayout>
-		);
-	}
-);
+	return (
+		<PageLayout>
+			<PageButton onClick={handlerPrevPage}>이전</PageButton>
+			<PageList />
+			<PageButton onClick={handlerNextPage}>다음</PageButton>
+		</PageLayout>
+	);
+});
 
 // 페이지 UI
 const PageList = () => {
-	const [pageSelector] = useRecoilState(pageInfoSelector);
-	const firstPage = pageSelector?.firstPage ?? 0;
-	const pages = pageSelector?.pages ?? 0;
-	const count = pageSelector?.count ?? 0;
+	const [pageState, setPage] = useRecoilState(pageInfoSelector);
+	const currentPage = pageState?.currentPage ?? 0;
+	const pages = pageState?.pages ?? 0;
+	const count = pageState?.count ?? 0;
+	const firstPage = pageState?.firstPage ?? 0;
 
 	const displayCount: number =
 		pages < count
@@ -66,20 +63,15 @@ const PageList = () => {
 			? pages - firstPage + 1
 			: count;
 
+	const changePage = useCallback(
+		(page: number) => {
+			setPage({ ...pageState, currentPage: page });
+		},
+		[pageState]
+	);
+
 	return (
 		<PageItems>
-			<PageItem displayCount={displayCount} />
-		</PageItems>
-	);
-};
-
-const PageItem = ({ displayCount }: { displayCount: number }) => {
-	const [pageSelector] = useRecoilState(pageInfoSelector);
-	const firstPage = pageSelector?.firstPage ?? 0;
-	const currentPage = pageSelector?.currentPage ?? 0;
-	const pageChangeEvent = pageSelector?.pageChangeEvent;
-	return (
-		<>
 			{Array(displayCount)
 				.fill(null)
 				.map((_, i) => {
@@ -87,14 +79,14 @@ const PageItem = ({ displayCount }: { displayCount: number }) => {
 					return (
 						<PageButton
 							key={`page_${page}`}
-							onClick={pageChangeEvent?.bind(null, page)}
+							onClick={changePage.bind(null, page)}
 							className={page === currentPage ? 'active' : ''}
 						>
 							{page}
 						</PageButton>
 					);
 				})}
-		</>
+		</PageItems>
 	);
 };
 

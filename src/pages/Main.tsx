@@ -8,21 +8,16 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const Main = ({ category }: { category: string }) => {
-	const [data, refetch, setPageChange] = useFetch(1, category);
+	const [data, refetch] = useFetch(category);
 	const totalCnt = data?.totalCnt;
 	const pages = data?.pages;
-	const currentPage = data?.currentPage;
 	const responseData = data?.responseData;
 
 	useEffect(() => {
 		// 서버의 데이터가 갱신되면 refetch한다.
 		refetch();
 	}, [responseData]);
-	// 페이지 체인지 이벤트
-	const fnPageChange = (page: number) => {
-		setPageChange(page);
-		window.scrollTo(0, 0);
-	};
+
 	return (
 		<ViewLayout>
 			<Controller>
@@ -38,10 +33,8 @@ const Main = ({ category }: { category: string }) => {
 			<View totalCnt={totalCnt}>
 				<Content data={responseData} />
 				<Page
-					pageChangeEvent={fnPageChange}
 					pages={pages}
 					count={5}
-					currentPage={currentPage}
 				/>
 			</View>
 		</ViewLayout>

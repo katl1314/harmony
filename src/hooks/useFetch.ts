@@ -1,13 +1,13 @@
-import { useState } from 'react';
 import { QueryFunctionContext, useQuery } from 'react-query';
 import { service } from '@src/services/AxiosService';
+import { useRecoilValue } from 'recoil';
+import { pageInfoSelector } from '@src/atoms/atoms';
 
 export const useFetch = (
-	initPage: number,
 	category: string,
 	limit: number = 10
 ) => {
-	const [currentPage, setCurrentPage] = useState(initPage);
+	const pageState = useRecoilValue(pageInfoSelector);
 
 	const url = `/${category}/page`;
 	const fetcher = async (ctx: QueryFunctionContext) => {
@@ -24,24 +24,18 @@ export const useFetch = (
 		return page === 1 ? page - 1 : (page - 1) * limit;
 	};
 
-	const { data, refetch } = useQuery([currentPage], fetcher, {
+	const { data, refetch } = useQuery([pageState.currentPage], fetcher, {
 		refetchOnMount: true,
 		refetchOnWindowFocus: true,
 		staleTime: 60 * 1000,
 		keepPreviousData: true,
 	});
 
-	const changePageHandler = (page: number) => {
-		setCurrentPage(page);
-	};
-
 	return [
 		{
 			...data?.data,
-			currentPage,
 			pages: Math.ceil(data?.data.totalCnt / limit),
 		},
 		refetch,
-		changePageHandler,
 	];
 };
