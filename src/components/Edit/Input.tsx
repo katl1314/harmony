@@ -24,11 +24,12 @@ const Input = forwardRef(
 export default Input;
 
 const InputWrap = styled.div`
-	margin: 0.5em auto;
 	& > input {
 		width: 100%;
-		border: 1px solid skyblue;
+		border: 1px solid #e5e5e5;
 		padding: 0.5em;
 		box-sizing: border-box;
+		border-radius: 5px;
+		height: 35px;
 	}
 `;
