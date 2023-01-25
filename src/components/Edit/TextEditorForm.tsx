@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useRef } from 'react';
+import { useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import styled from 'styled-components';
@@ -6,6 +6,8 @@ import { EditorState } from 'draft-js';
 // convertToRaw로 변환된 원시 JS구조를 HTML문서로 변환함.
 import draftToHtml from 'draftjs-to-html';
 import { convertToRaw } from 'draft-js';
+import { formSelector } from '@src/atoms/atoms';
+import { useRecoilState } from 'recoil';
 const MyBlock = styled.div`
 	.wrapper-class {
 		width: 100%;
@@ -20,10 +22,12 @@ const MyBlock = styled.div`
 	}
 `;
 
-const TestEditorForm = forwardRef((props, ref) => {
+const TestEditorForm = () => {
 	// useState로 상태관리하기 초기값은 EditorState.createEmpty()
 	// EditorState의 비어있는 ContentState 기본 구성으로 새 개체를 반환 => 이렇게 안하면 상태 값을 나중에 변경할 수 없음.
 	const [editorState, setEditorState] = useState(EditorState.createEmpty());
+	const [value, setValue] = useRecoilState(formSelector);
+
 	const onEditorStateChange = (editorState: EditorState) => {
 		// editorState에 값 설정
 		setEditorState(editorState);
@@ -31,7 +35,8 @@ const TestEditorForm = forwardRef((props, ref) => {
 		const convertedData = draftToHtml(
 			convertToRaw(editorState.getCurrentContent())
 		);
-		console.log(convertedData.split('\n'));
+		// 컨텐츠의 내용이 변경될때 atoms의 값을 업데이트한다.
+		setValue({ ...value, content: convertedData });
 	};
 
 	return (
@@ -61,6 +66,6 @@ const TestEditorForm = forwardRef((props, ref) => {
 			/>
 		</MyBlock>
 	);
-});
+};
 
 export default TestEditorForm;

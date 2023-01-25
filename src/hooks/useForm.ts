@@ -1,4 +1,6 @@
+import { formSelector, initFormAtoms } from '@src/atoms/atoms';
 import { useState, useEffect, SyntheticEvent } from 'react';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 // 서버에서 데이터를 패칭하는 것은 useQuery Hook을 이용하여 처리하였음.
 
 /**
@@ -8,13 +10,10 @@ import { useState, useEffect, SyntheticEvent } from 'react';
  * @param url 서버에 전달하기 위한 경로
  * @returns { value, handlerChange, handlerSubmit }
  */
-export const useForm = ({
-	initialValues,
-	onSubmit,
-	validate,
-}: IUserFormInfo) => {
-	// 초기 상태 세팅
-	const [value, setValue] = useState(initialValues);
+export const useForm = ({ onSubmit, validate }: IFormParam) => {
+	const resetState = useResetRecoilState(initFormAtoms);
+	const [value, setValue] = useRecoilState(formSelector);
+
 	const [isValidate, setValidate] = useState<{
 		error: any;
 		message: any;
@@ -23,8 +22,7 @@ export const useForm = ({
 		message: null,
 	});
 	const [isLoading, setIsLoading] = useState(false);
-	// change 이벤트
-	// handlerChange는 HTMLInputElement, HTMLTextAreaElement만 가능함.
+
 	const handlerChange = <T extends ElementEditType>(event: SyntheticEvent) => {
 		const id = (event.target as T).id;
 		const changeValue = (event.target as T).value;
@@ -32,12 +30,9 @@ export const useForm = ({
 		setValue({ ...value, [id]: changeValue });
 	};
 
-	// submit 이벤트
 	/**
 	 * SyntheticEvent는 합성 이벤트
 	 * 이벤트 핸들러는 모든 브라우저에서 이벤트를 동일하게 처리하기 위한 이벤트 래퍼 SyntheticEvent 객체를 전달받는다.
-	 * 해당 이벤트는 preventEvent, stopPropagation메서드를 포함하여 모든 브라우저에서 동일하게 동작함.
-	 *
 	 * 합성 이벤트는 NativeEvent(브라우저 고유 이벤트)에 직접 대응하지 않음.
 	 */
 	const handlerSubmit = async (event: SyntheticEvent) => {
@@ -59,13 +54,21 @@ export const useForm = ({
 		isValidate && console.log(isValidate);
 	}, [isValidate]);
 
+	useEffect(() => {
+		// 컴포넌트 마운트 될때 atoms default값으로 초기화.
+		resetState();
+	}, []);
+
 	return { value, isLoading, handlerChange, handlerSubmit };
 };
 
-interface IUserFormInfo {
-	initialValues: {
-		[id: string]: string;
-	};
+export interface IFormData {
+	title: string;
+	content: string;
+	category?: string;
+}
+
+interface IFormParam extends IFormData {
 	onSubmit: (data: any) => void;
 	validate: (value: any) => { error: any; message: any } | null;
 }

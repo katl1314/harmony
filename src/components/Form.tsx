@@ -10,7 +10,7 @@ import TextEditorForm from './Edit/TextEditorForm';
 const Form = ({ category }: { category: string }) => {
 	const navigate = useNavigate();
 	const titleRef = useRef(null);
-	const contentRef = useRef(null);
+	// const contentRef = useRef(null);
 	const { uid } = useContext(AppContext);
 	const fnSubmit = async (data: any) => {
 		try {
@@ -30,19 +30,16 @@ const Form = ({ category }: { category: string }) => {
 			return { error: new Error('제목을 입력하세요.'), target: titleRef };
 		}
 
-		if (content === '') {
+		/* if (content === '') {
 			return { error: new Error('내용을 입력하세요.'), target: contentRef };
-		}
+		} */
 		// 정상적으로 validate 체크 완료시 null리턴
 		return null;
 	};
 
 	const { value, handlerChange, handlerSubmit } = useForm({
-		initialValues: {
-			title: '',
-			content: '',
-			category,
-		},
+		title: '',
+		content: '',
 		onSubmit: fnSubmit,
 		validate: fnValidate,
 	});
@@ -66,7 +63,7 @@ const Form = ({ category }: { category: string }) => {
 				<Label>
 					<label>내용</label>
 				</Label>
-				<TextEditorForm ref={contentRef} />
+				<TextEditorForm />
 			</FormItem>
 			<FormItem>
 				<Button type="submit">글 쓰기</Button>

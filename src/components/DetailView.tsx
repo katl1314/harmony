@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import LikeView from './LikeView';
 import ProfileImage from './Profile/ProfileImage';
-
+import parser from 'html-react-parser';
 const DetailView = () => {
 	// 상위 경로의 파라미터를 하위 경로에서 받을 수 있음.
 	const params = useParams();
@@ -33,18 +33,9 @@ const DetailView = () => {
 const ContentView = ({ children }: any) => {
 	// 줄 바꿈 여부 체크
 	const content: string = children as string;
-	const isLineBreaking = /\n/.test(content);
-
-	const convertContent = () => {
-		const htPanels = content
-			.split(/\n/)
-			.map((text, index) => <p key={index}>{text}</p>);
-		return <>{htPanels}</>;
-	};
-
 	return (
 		<ContentLayout>
-			{!isLineBreaking ? <p>{content}</p> : convertContent()}
+			<>{parser(content)}</>
 		</ContentLayout>
 	);
 };
