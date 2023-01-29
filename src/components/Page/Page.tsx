@@ -13,6 +13,7 @@ export interface IPage {
 const Page = memo(({ pages, count = 10 }: IPage) => {
 	const [pageState, setPage] = useRecoilState(pageInfoSelector);
 	const firstPage = pageState?.firstPage ?? pageState?.currentPage;
+
 	useEffect(() => {
 		setPage({ ...pageState, pages, count });
 	}, []);
@@ -76,7 +77,6 @@ const PageList = () => {
 				.fill(null)
 				.map((_, i) => {
 					const page = i + firstPage;
-					console.log(i, firstPage);
 					return (
 						<PageButton
 							key={`page_${page}`}

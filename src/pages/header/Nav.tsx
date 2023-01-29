@@ -1,7 +1,11 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import { GiHamburgerMenu } from 'react-icons/gi';
 const Nav = () => {
+
+	const location = useLocation(); // 현재 페이지의 URL정보를 반환하는 훅
+	console.log(useMatch('/')); // 현재 페이지의 경로와 일치하는지 여부 검사
+	console.log(location);
 	return (
 		<NavWrap>
 			<MobileNavbar>

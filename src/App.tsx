@@ -1,6 +1,6 @@
 import Header from '@src/layout/Header';
 import { UserType } from './types/Types';
-import { createContext, useReducer, useEffect } from 'react';
+import { createContext, useReducer, useEffect, useState } from 'react';
 import { userReducer } from '@src/store/userReducer';
 import { authService } from './firebase.config';
 import { service } from '@src/services/AxiosService';
@@ -37,9 +37,23 @@ export const AppContext = createContext<UserType>(initLoginInfo);
 
 function App() {
 	const [user, setUser] = useReducer(userReducer, initLoginInfo);
+	const [percent, setPercent] = useState(0);
+
+	const scrollHandler = () => {
+		const percent = Math.floor(
+			(globalThis.scrollY /
+				(document.body.offsetHeight + 70 - globalThis.innerHeight)) *
+				100
+		);
+		setPercent(percent);
+	};
 
 	useEffect(() => {
 		persistentAuth();
+		document.addEventListener('scroll', scrollHandler);
+		return () => {
+			document.removeEventListener('scroll', scrollHandler);
+		};
 	}, []);
 
 	const persistentAuth = async () => {
@@ -59,7 +73,7 @@ function App() {
 	return (
 		<AppContext.Provider value={user}>
 			<div className="App">
-				<Header />
+				<Header percent={percent} />
 				<Body>
 					<Routes>
 						<Route path="/login" element={<Login />}></Route>
@@ -76,6 +90,8 @@ const Body = styled.main`
 	display: flex;
 	justify-content: center;
 	max-width: 80rem;
+	top: 70px;
+	position: relative;
 `;
 
 export default App;

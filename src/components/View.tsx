@@ -6,7 +6,7 @@ const View = ({
 	children: ReactNodeType;
 	totalCnt: number;
 }) => {
-	return <>{totalCnt && <>{children}</>}</>;
+	return <>{totalCnt ? <>{children}</> : <></>}</>;
 };
 
 export default View;

@@ -6,7 +6,7 @@ import { atom, selector } from 'recoil';
 export const initPageAtoms = atom<IPage>({
 	key: 'pageContext',
 	default: {
-		pages: 0,
+		pages: 1,
 		count: 0,
 		currentPage: 1,
 		firstPage: 1,

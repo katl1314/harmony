@@ -3,6 +3,11 @@ import styled from 'styled-components';
 export const HeaderWrap = styled.header`
 	padding: 0.5em;
 	border-bottom: 1px solid #e5e5e5;
+	position: fixed;
+	z-index: 9999;
+	width: 100%;
+	top: 0;
+	background-color: #fff;
 `;
 
 export const HeaderContainer = styled.div`

@@ -1,8 +1,8 @@
 import Controller from '@components/Controller';
 import CustomNavLink from '@components/CustomNavLink';
 import View from '@components/View';
-import Content from '@components/Content';
-import Page from '@components/Page/Page';
+import Content from '@src/components/Content';
+import Page from '@src/components/Page/Page';
 import { useFetch } from '@src/hooks/useFetch';
 import { useEffect } from 'react';
 import styled from 'styled-components';
@@ -31,14 +31,45 @@ const Main = ({ category }: { category: string }) => {
 				</CustomNavLink>
 			</Controller>
 			<View totalCnt={totalCnt}>
-				<Content data={responseData} />
-				<Page
+				<Board
+					data={responseData}
+					totalCnt={totalCnt}
 					pages={pages}
 					count={5}
+					emptyMessage={'게시물이 없습니다.'}
 				/>
 			</View>
 		</ViewLayout>
 	);
+};
+
+const Board = ({
+	data,
+	totalCnt,
+	pages,
+	count,
+	emptyMessage,
+}: {
+	data: any[];
+	totalCnt: number;
+	pages: number;
+	count: number;
+	emptyMessage: string;
+}) => {
+	return (
+		<>
+			{totalCnt > 0 ? (
+				<Content data={data} />
+			) : (
+				<EmptyMessage>{emptyMessage}</EmptyMessage>
+			)}
+			<Page pages={pages} count={count} />
+		</>
+	);
+};
+
+const EmptyMessage = ({ children }: { children: string }) => {
+	return <p>{children}</p>;
 };
 
 const ViewLayout = styled.div`
